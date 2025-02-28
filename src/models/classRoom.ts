@@ -1,4 +1,4 @@
-import {Column, DataType, HasMany, Model, PrimaryKey, Table, Unique} from "sequelize-typescript";
+import {Column, HasMany, Model, PrimaryKey, Table, Unique} from "sequelize-typescript";
 import classSection from "./classSections";
 import StudentEnrollment from "./studentEnrollment";
 

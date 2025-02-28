@@ -8,46 +8,46 @@ import ClassSection from "../../models/classSections";
 
 // Schema for validating the params (classroomId)
 const getClassroomParamsSchema = Joi.object({
-  classroomId: Joi.string()
-    .pattern(/^classroom_/) // ensures the classroom id follows the expected pattern
-    .required(),
+    classroomId: Joi.string()
+        .pattern(/^classroom_/) // ensures the classroom id follows the expected pattern
+        .required(),
 });
 
 export default async function getClassroom(
-  req: Express.Request,
-  res: Express.Response,
-  next: Express.NextFunction
+    req: Express.Request,
+    res: Express.Response,
+    next: Express.NextFunction
 ) {
-  logger.info("Starting get classroom process.");
+    logger.info("Starting get classroom process.");
 
-  // Validate the request params
-  const paramsError = joiValidator(getClassroomParamsSchema, "params", req, res);
-  if (paramsError) {
-    return next(paramsError);
-  }
-
-  const { classroomId } = req.params;
-
-  try {
-    const classroom = await ClassRoom.findByPk(classroomId, {include: [ClassSection]});
-    if (!classroom) {
-      logger.error(`Classroom not found: ${classroomId}`);
-      return next(
-        new ResponseErr(
-          404,
-          "Classroom Not Found",
-          "The provided classroom id does not exist."
-        )
-      );
+    // Validate the request params
+    const paramsError = joiValidator(getClassroomParamsSchema, "params", req, res);
+    if (paramsError) {
+        return next(paramsError);
     }
 
-    logger.info(`Classroom retrieved successfully: ${classroomId}`);
-    res.status(200).json({
-      message: "Classroom retrieved successfully",
-      classRoomData: classroom,
-    });
-  } catch (error) {
-    logger.error(error);
-    next(error);
-  }
+    const { classroomId } = req.params;
+
+    try {
+        const classroom = await ClassRoom.findByPk(classroomId, {include: [ClassSection]});
+        if (!classroom) {
+            logger.error(`Classroom not found: ${classroomId}`);
+            return next(
+                new ResponseErr(
+                    404,
+                    "Classroom Not Found",
+                    "The provided classroom id does not exist."
+                )
+            );
+        }
+
+        logger.info(`Classroom retrieved successfully: ${classroomId}`);
+        res.status(200).json({
+            message: "Classroom retrieved successfully",
+            classRoomData: classroom,
+        });
+    } catch (error) {
+        logger.error(error);
+        next(error);
+    }
 }
