@@ -1,4 +1,9 @@
 import {Sequelize} from "sequelize-typescript";
+import Employee from "../models/employee";
+import Teacher from "../models/teacher";
+import Driver from "../models/driver";
+import Admin from "../models/admin";
+import Vehicle from "../models/vehicle";
 
 const sequelize = new Sequelize({
     dialect: "postgres",
@@ -7,7 +12,7 @@ const sequelize = new Sequelize({
     username: "postgres",
     password: "postgres",
     database: "quick-erp",
-    models: [__dirname + "../models"],
+    models: [Employee, Teacher, Driver, Admin, Vehicle],
     logging: false,
 });
 

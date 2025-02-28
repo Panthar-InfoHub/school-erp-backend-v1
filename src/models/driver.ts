@@ -1,16 +1,16 @@
 import {AllowNull, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
-import User from "./user";
+import Employee from "./employee";
 import Vehicle from "./vehicle";
 
 
 @Table
 export default class Driver extends Model {
 
-    @PrimaryKey @Column @ForeignKey(() => User) declare id:string
+    @PrimaryKey @Column @ForeignKey(() => Employee) declare id:string
 
     @AllowNull(true) @Column @ForeignKey(() => Vehicle) declare vehicle_id: string
 
-    @BelongsTo(() => User) declare user: User;
+    @BelongsTo(() => Employee) declare user: Employee;
 
 
     @BelongsTo(() => Vehicle)

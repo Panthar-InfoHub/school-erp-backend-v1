@@ -7,6 +7,9 @@ import expressWinston from "express-winston";
 import "./lib/seq";
 import Express from "express";
 import cors from "cors"
+import employeeRouter from "./routers/employeeRouter";
+import ResponseErr from "./error/responseErr";
+import Joi from "joi";
 
 const PORT = Number(process.env.PORT) || 8080;
 
@@ -33,11 +36,49 @@ app.use(expressWinston.logger({
 }));
 
 
+app.use("/v1/employee", employeeRouter)
+
 app.get("/", (req: Express.Request, res: Express.Response) => {
     res.send("Server is live!");
     return
 })
 
+
+app.use((err:any, req:Express.Request, res:Express.Response, next:Express.NextFunction) => {
+
+    if (err instanceof Joi.ValidationError) {
+        res.status(400).json({
+            error: err.message,
+            details: err.details
+        })
+        return
+    }
+
+    if (err instanceof ResponseErr) {
+        res.status(err.responseCode).json({
+            error: err.message,
+            details: err.details
+        })
+        return
+    }
+
+    if (err instanceof Error) {
+        res.status(500).json({
+            error: err.message,
+            details: process.env.NODE_ENV === "development" ? err.stack : undefined
+        })
+    }
+
+    res.status(500).json(
+        {
+            error: "Internal Server Error",
+            details: undefined
+        }
+    )
+    next()
+    return;
+
+})
 
 app.listen(PORT, () => {
     console.log(`Server is live on port ${PORT}`);

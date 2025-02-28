@@ -1,11 +1,11 @@
 import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
-import User from "./user";
+import Employee from "./employee";
 
 
 @Table
 export default class Admin extends Model {
 
-    @PrimaryKey @Column @ForeignKey(() => User) declare id: string;
+    @PrimaryKey @Column @ForeignKey(() => Employee) declare id: string;
 
-    @BelongsTo(() => User) declare user: User;
+    @BelongsTo(() => Employee) declare user: Employee;
 }

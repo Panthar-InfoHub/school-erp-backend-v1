@@ -1,21 +1,16 @@
-import {
-    BelongsTo,
-    Column,
-    DataType,
-    Default,
-    ForeignKey,
-    Model,
-    PrimaryKey,
-    Table
-} from "sequelize-typescript";
-import User from "./user";
+import {Column, DataType, Default, HasOne, Model, PrimaryKey, Table, Unique} from "sequelize-typescript";
+import Admin from "./admin";
+import Teacher from "./teacher";
+import Driver from "./driver";
 
 
 @Table
-export default class Staff extends Model {
+export default class Employee extends Model {
+    @PrimaryKey @Column declare id: string;
 
+    @Unique @Column declare email: string;
 
-    @PrimaryKey @Column @ForeignKey(() => User) declare id:string
+    @Column declare name: string;
 
     @Default("") @Column declare address: string
 
@@ -41,7 +36,14 @@ export default class Staff extends Model {
     @Default(false) @Column
     declare isFired: boolean
 
-    @BelongsTo(() => User)
-    declare user: User;
+    @HasOne(() => Admin)
+    declare admin: Admin;
+
+    @HasOne(() => Teacher)
+    declare teacherData: Teacher;
+
+    @HasOne(() => Driver)
+    declare driverData: Driver;
+
 
 }
