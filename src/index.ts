@@ -9,6 +9,7 @@ import Express from "express";
 import cors from "cors"
 import employeeRouter from "./routers/employeeRouter";
 import vehicleRouter from "./routers/vehicleRouter";
+import studentRouter from "./routers/studentRouter";
 import ResponseErr from "./error/responseErr";
 import Joi from "joi";
 import generateUUID from "./utils/uuidGenerator";
@@ -53,6 +54,7 @@ app.use(expressWinston.logger({
 
 app.use("/v1/employee", employeeRouter)
 app.use("/v1/vehicle", vehicleRouter)
+app.use("/v1/student", studentRouter)
 
 app.get("/", (req: Express.Request, res: Express.Response) => {
     res.send("Server is live!");
