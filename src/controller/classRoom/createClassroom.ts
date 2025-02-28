@@ -9,13 +9,11 @@ import generateUUID from "../../utils/uuidGenerator";
 type createClassroomRequest = {
     name: string,
     isActive: boolean,
-    defaultFee: number,
 }
 
 const createClassroomRequestSchema = Joi.object<createClassroomRequest>({
     name: Joi.string().required(),
     isActive: Joi.boolean().required(),
-    defaultFee: Joi.number().min(0).required(),
 })
 
 export default async function createClassroom(req: Express.Request, res: Express.Response, next:Express.NextFunction) {
@@ -36,7 +34,6 @@ export default async function createClassroom(req: Express.Request, res: Express
             id : `classroom_${generateUUID()}`,
             name: body.name.toUpperCase(),
             isActive: body.isActive,
-            defaultFee: body.defaultFee,
         })
 
         logger.info(`Classroom created successfully ${newClassRoom.id}`)

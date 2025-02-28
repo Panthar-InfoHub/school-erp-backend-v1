@@ -11,9 +11,6 @@ export default class ClassRoom extends Model {
 
     @Column declare isActive:boolean
 
-    @Column({type:DataType.FLOAT})
-    declare defaultFee:number
-
     @HasMany(() => classSection)
     declare classSections: classSection[]
 
