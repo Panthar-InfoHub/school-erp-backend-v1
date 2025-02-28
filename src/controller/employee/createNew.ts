@@ -2,11 +2,14 @@ import Express from "express";
 import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import Employee from "../../models/employee";
-import {v7} from "uuid"
+import bcrypt from "bcrypt"
+import logger from "../../lib/logger";
+import generateUUID from "../../utils/uuidGenerator";
 
 
 type createEmployeeRequest = {
     name: string,
+    password: string,
     address: string | undefined
     fatherName: string | undefined,
     fatherPhone: string | undefined,
@@ -23,6 +26,7 @@ type createEmployeeRequest = {
 
 const createEmployeeSchema = Joi.object<createEmployeeRequest>({
     name: Joi.string().required(),
+    password: Joi.string().required().min(8).regex(/^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{9,}$/),
     address: Joi.string().allow('').optional(),
     fatherName: Joi.string().allow('').optional(),
     fatherPhone: Joi.string().allow('').optional(),
@@ -56,7 +60,16 @@ export default async function createEmployee(req: Express.Request, res: Express.
     const body : createEmployeeRequest = req.body;
 
     try {
-        const newEmployee = await Employee.create({id: `emp_${v7()}`,...body})
+        const passwordHash = bcrypt.hashSync(body.password, 10)
+        const newUserid = `emp_${generateUUID()}`
+        logger.debug(`Generated password hash for Employee ${newUserid} is : ${passwordHash} (Employee yet to be saved)`)
+
+        const newEmployee = await Employee.create({
+            id: newUserid,
+            passwordHash,
+            ...body})
+
+        logger.debug(`Employee created successfully ${newEmployee.id}`)
 
         res.status(201).json({
             message: "Employee Created Successfully",
@@ -68,7 +81,7 @@ export default async function createEmployee(req: Express.Request, res: Express.
     }
     catch (e) {
     if (e instanceof Error) {
-        console.error(e)
+        logger.error(e)
         if (e.name === "SequelizeUniqueConstraintError") {
             res.status(409).json({
                 error: "Email already in use",

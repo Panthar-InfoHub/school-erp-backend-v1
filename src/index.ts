@@ -10,6 +10,7 @@ import cors from "cors"
 import employeeRouter from "./routers/employeeRouter";
 import ResponseErr from "./error/responseErr";
 import Joi from "joi";
+import generateUUID from "./utils/uuidGenerator";
 
 const PORT = Number(process.env.PORT) || 8080;
 
@@ -19,6 +20,19 @@ app.use(cors({origin: "*"}))
 app.use(Express.json())
 app.use(Express.urlencoded({ extended: true }))
 
+app.use((req, res, next) => {
+
+    const requestId = req.headers["x-request-id"]
+    if (requestId) {
+        next()
+        return;
+    }
+
+    // Assign RequestId
+    req.headers["x-request-id"] = generateUUID(24)
+    next()
+    return;
+})
 
 app.use(expressWinston.logger({
     transports: [new winston.transports.Console()],
