@@ -5,6 +5,9 @@ import Employee from "../../models/employee";
 import bcrypt from "bcrypt"
 import logger from "../../lib/logger";
 import generateUUID from "../../utils/uuidGenerator";
+import sequelize from "../../lib/seq";
+import Teacher from "../../models/teacher";
+import Driver from "../../models/driver";
 
 
 type createEmployeeRequest = {
@@ -59,15 +62,40 @@ export default async function createEmployee(req: Express.Request, res: Express.
 
     const body : createEmployeeRequest = req.body;
 
+    const transaction = await sequelize.transaction()
+
     try {
+
         const passwordHash = bcrypt.hashSync(body.password, 10)
         const newUserid = `emp_${generateUUID()}`
+
         logger.debug(`Generated password hash for Employee ${newUserid} is : ${passwordHash} (Employee yet to be saved)`)
 
         const newEmployee = await Employee.create({
             id: newUserid,
             passwordHash,
-            ...body})
+            ...body}
+        , {transaction})
+
+        // Based on their role.
+        // Create Specific Entries.
+        // ADMINS have their own routes!
+        switch (body.workRole) {
+            case "teacher":
+                await Teacher.create({
+                    id: newUserid,
+                }, {transaction})
+                break;
+            case "driver":
+                await Driver.create({
+                    id: newUserid,
+                }, {transaction})
+                break;
+            default:
+                break;
+        }
+
+        await transaction.commit();
 
         logger.debug(`Employee created successfully ${newEmployee.id}`)
 
@@ -80,16 +108,19 @@ export default async function createEmployee(req: Express.Request, res: Express.
 
     }
     catch (e) {
-    if (e instanceof Error) {
-        logger.error(e)
-        if (e.name === "SequelizeUniqueConstraintError") {
-            res.status(409).json({
-                error: "Email already in use",
-                details: `${e.name}, ${e.message}`
-            })
-            return
+
+        await transaction.rollback();
+
+        if (e instanceof Error) {
+            logger.error(e)
+            if (e.name === "SequelizeUniqueConstraintError") {
+                res.status(409).json({
+                    error: "Email already in use",
+                    details: `${e.name}, ${e.message}`
+                })
+                return
+            }
         }
-    }
     next(e)
 }
 

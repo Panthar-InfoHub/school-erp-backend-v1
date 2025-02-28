@@ -4,6 +4,9 @@ import joiValidator from "../../middleware/joiValidator";
 import Employee from "../../models/employee";
 import ResponseErr from "../../error/responseErr";
 import bcrypt from "bcrypt";
+import Teacher from "../../models/teacher";
+import Driver from "../../models/driver";
+import sequelize from "../../lib/seq";
 
 type updateEmpReqParams = {
     employeeId: string
@@ -70,6 +73,8 @@ export default async function updateEmployee(req:Express.Request, res:Express.Re
     const empId = req.params.employeeId
     const body : updateEmpReqBody = req.body;
 
+    const transaction = await sequelize.transaction()
+
     /*
     * We need to update the key "passwordHash". We could use a variable, but this is simpler.
     * We're adding the key in the body of our request directly and spreading the body it in try block.
@@ -79,24 +84,52 @@ export default async function updateEmployee(req:Express.Request, res:Express.Re
     }
 
     try {
-
-        const [affectedCount] = await Employee.update({...body}, {where: {id: empId}})
-
-        if (affectedCount === 0) {
+        
+        const empData = await Employee.findByPk(empId)
+        if (!empData) {
+            await transaction.rollback()
             next(new ResponseErr(
                 404,
                 "Could not update the employee details",
-                "The identifying field did not result a successful search."))
+                "The identifying field did not result a successful search."
+            ))
             return
         }
 
+
+        /*
+        * Compare `workRole` in `body` and `empData`.
+        * Perform specific deletion operations if the role is changed.
+        */
+        if (body.workRole && body.workRole !== empData.workRole) {
+            if (empData.workRole === "teacher" && body.workRole !== "teacher") {
+                await Teacher.destroy({where: {id: empId}, transaction});
+            }
+            if (empData.workRole === "driver" && body.workRole !== "driver") {
+                await Driver.destroy({where: {id: empId}, transaction});
+            }
+
+            if (body.workRole === "teacher") {
+                await Teacher.create({id: empId}, {transaction});
+            }
+            if (body.workRole === "driver") {
+                await Driver.create({id: empId}, {transaction});
+            }
+        }
+        
+        
+        const updatedEmpData = await empData.update({...body}, {where: {id: empId}, transaction})
+
+        await transaction.commit()
+
         res.status(200).json({
             message: "Employee Updated Successfully",
-            affectedCount
+            employeeData: updatedEmpData,
         })
 
     }
     catch (e) {
+        await transaction.rollback();
         next(e)
         return
     }

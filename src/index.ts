@@ -29,7 +29,7 @@ app.use((req, res, next) => {
     }
 
     // Assign RequestId
-    req.headers["x-request-id"] = generateUUID(24)
+    req.headers["x-request-id"] = generateUUID()
     next()
     return;
 })
