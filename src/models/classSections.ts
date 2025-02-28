@@ -1,5 +1,6 @@
-import {Column, DataType, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
 import ClassRoom from "./classRoom";
+import StudentEnrollment from "./studentEnrollment";
 
 
 @Table
@@ -19,6 +20,9 @@ export default class ClassSection extends Model {
 
     @Column({type: DataType.JSON})
     declare subjects: subject[]
+
+    @HasMany(() => StudentEnrollment)
+    declare studentEnrollments: StudentEnrollment[]
 
 }
 
