@@ -16,5 +16,7 @@ const sequelize = new Sequelize({
     logging: false,
 });
 
+export default sequelize;
+
 sequelize.sync({alter: true})
     .then(() => console.log("DB Synced"));
