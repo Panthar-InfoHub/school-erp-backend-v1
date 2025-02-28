@@ -8,6 +8,7 @@ import "./lib/seq";
 import Express from "express";
 import cors from "cors"
 import employeeRouter from "./routers/employeeRouter";
+import vehicleRouter from "./routers/vehicleRouter";
 import ResponseErr from "./error/responseErr";
 import Joi from "joi";
 import generateUUID from "./utils/uuidGenerator";
@@ -51,6 +52,7 @@ app.use(expressWinston.logger({
 
 
 app.use("/v1/employee", employeeRouter)
+app.use("/v1/vehicle", vehicleRouter)
 
 app.get("/", (req: Express.Request, res: Express.Response) => {
     res.send("Server is live!");
@@ -79,6 +81,7 @@ app.use((err:any, req:Express.Request, res:Express.Response, next:Express.NextFu
     if (err instanceof Error) {
         res.status(500).json({
             error: err.message,
+            name:  err.name,
             details: process.env.NODE_ENV === "development" ? err.stack : undefined
         })
     }

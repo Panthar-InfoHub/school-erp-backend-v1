@@ -1,7 +1,5 @@
 import {
-    AllowNull,
     Column,
-    Default,
     ForeignKey,
     HasOne,
     Model,
@@ -19,8 +17,6 @@ export default class Vehicle extends Model {
 
     @Column @ForeignKey(() => Driver)
     declare driverId:string
-
-    @Default(null) @AllowNull(true) @Column @ForeignKey(() => Vehicle) declare vehicle_id:string
 
     @Unique @Column declare vehicleNumber:string
 
