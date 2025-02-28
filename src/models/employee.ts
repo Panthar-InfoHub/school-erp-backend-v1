@@ -10,6 +10,8 @@ export default class Employee extends Model {
 
     @Unique @Column declare email: string;
 
+    @Column declare passwordHash: string;
+
     @Column declare name: string;
 
     @Default("") @Column declare address: string
