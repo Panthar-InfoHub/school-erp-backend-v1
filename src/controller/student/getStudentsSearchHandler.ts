@@ -2,9 +2,9 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { Op, literal, fn, col, where } from "sequelize";
-import joiValidator from "../middleware/joiValidator";
-import logger from "../lib/logger";
-import Student from "../models/student";
+import joiValidator from "../../middleware/joiValidator";
+import logger from "../../lib/logger";
+import Student from "../../models/student";
 
 const searchStudentsQuerySchema = Joi.object({
   q: Joi.string().required(),

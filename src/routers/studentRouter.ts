@@ -2,7 +2,7 @@ import Express from "express";
 import createStudent from "../controller/student/addStudent";
 import deleteStudent from "../controller/student/deleteStudent";
 import updateStudent from "../controller/student/updateStudent";
-import getSearchStudents from "../models/getStudentsSearchHandler";
+import getSearchStudents from "../controller/student/getStudentsSearchHandler";
 
 const router = Express.Router();
 
