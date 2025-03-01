@@ -36,8 +36,9 @@ export default class ClassSection extends Model {
     @BelongsTo(() => ClassRoom)
     declare classRoom: ClassRoom
 
-    @HasMany(() => StudentEnrollment)
-    declare studentEnrollments: StudentEnrollment[]
+    @HasMany(() => StudentEnrollment, { onDelete: "CASCADE", hooks: true })
+    declare studentEnrollments: StudentEnrollment[];
+
 
 }
 

@@ -11,8 +11,8 @@ export default class ClassRoom extends Model {
 
     @Column declare isActive:boolean
 
-    @HasMany(() => classSection)
-    declare classSections: classSection[]
+    @HasMany(() => classSection, { onDelete: "CASCADE", hooks: true })
+    declare classSections: classSection[];
 
     @HasMany(() => StudentEnrollment)
     declare studentEnrollments: StudentEnrollment[]

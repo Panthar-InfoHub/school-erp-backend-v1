@@ -35,8 +35,9 @@ export default class Student extends Model {
     })
     declare profileImg: Buffer;
 
-    @HasMany(() => StudentEnrollment)
-    declare studentEnrollments: StudentEnrollment[]
+    @HasMany(() => StudentEnrollment, { onDelete: "CASCADE", hooks: true }) // Cascade delete
+    declare studentEnrollments: StudentEnrollment[];
+
 
 }
 

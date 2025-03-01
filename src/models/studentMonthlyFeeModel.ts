@@ -50,7 +50,10 @@ export default class StudentMonthlyFee extends Model {
     @Default(null) @AllowNull(true) @Column({ type: DataType.DATEONLY }) // Only set when fully paid!
     declare paidDate: Date | null;
 
-    @BelongsTo(() => StudentEnrollment)
+    @BelongsTo(() => StudentEnrollment, { onDelete: "CASCADE" }) // Cascade delete when the enrollment is deleted
     declare studentEnrollment: StudentEnrollment;
+
+
+
 
 }

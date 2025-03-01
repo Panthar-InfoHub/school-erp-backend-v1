@@ -63,8 +63,9 @@ export default class StudentEnrollment extends Model {
     @Default(false) @Column
     declare isComplete: boolean;
 
-    @BelongsTo(() => Student)
+    @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade delete when the student is deleted
     declare student: Student;
+
 
     @BelongsTo(() => ClassRoom)
     declare classRoom: ClassRoom;
@@ -72,7 +73,8 @@ export default class StudentEnrollment extends Model {
     @BelongsTo(() => ClassSection)
     declare classSection: ClassSection;
 
-    @HasMany(() => StudentMonthlyFee)
-    declare monthlyFees: StudentMonthlyFee[]
+    @HasMany(() => StudentMonthlyFee, { onDelete: "CASCADE", hooks: true }) // Cascade delete for monthly fees
+    declare monthlyFees: StudentMonthlyFee[];
+
 
 }

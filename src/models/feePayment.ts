@@ -21,10 +21,11 @@ export default class FeePayment extends Model {
 
     @Column declare remainingBalance: number
 
-    @BelongsTo(() => Student)
-    declare student:Student
+    @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade delete on student deletion
+    declare student: Student;
 
-    @BelongsTo(() => StudentEnrollment)
-    declare studentEnrollment:StudentEnrollment
+    @BelongsTo(() => StudentEnrollment, { onDelete: "CASCADE" }) // Cascade delete on enrollment deletion
+    declare studentEnrollment: StudentEnrollment;
+
 
 }

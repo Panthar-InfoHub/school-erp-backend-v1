@@ -24,6 +24,8 @@ router.put("/:studentId/enrollment/:enrollmentId/reset", resetEnrollment) // res
 
 router.patch("/:studentId/enrollment/:enrollmentId/update", updateEnrollment) // update it!
 
+router.delete("/:studentId/enrollment/:enrollmentId")
+
 router.post("/:studentId/image") // update image
 
 router.delete("/:studentId", deleteStudent) // delete student completely. (only if no payments exist)
