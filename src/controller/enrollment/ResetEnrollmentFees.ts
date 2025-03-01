@@ -66,6 +66,20 @@ export default async function resetEnrollment(
       next(new ResponseErr(403, "Unauthorized", "The enrollment does not belong to the specified student."));
       return;
     }
+
+    if (enrollmentData.isComplete) {
+      await transaction.rollback();
+      next(new ResponseErr(409, "Enrollment is Complete. Cannot make changes", `Since enrollment is complete, it is archived.
+      You can update the enrollment status to active to make changes.`))
+      return
+    }
+
+    if (!enrollmentData.isActive) {
+      await transaction.rollback();
+      next(new ResponseErr(400, "Enrollment is not Active Anymore (is Archived Now)", "The enrollment is not active. Please activate it first."))
+      return;
+    }
+
     
     // Delete all fee payments belonging to this enrollment
     await FeePayment.destroy({
