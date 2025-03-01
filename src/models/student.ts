@@ -9,6 +9,8 @@ export default class Student extends Model {
 
     @Column declare name:string
 
+    @Column declare searchName:string
+
     @Column declare address:string
 
     @Column declare dateOfBirth:Date

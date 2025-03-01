@@ -47,6 +47,7 @@ export default async function createStudent(req: Express.Request, res: Express.R
 
         const newStudent = await Student.create({
             id: `stu_${generateUUID()}`,
+            searchName: body.name.toLowerCase(),
             ...body,
         }, {transaction})
 
