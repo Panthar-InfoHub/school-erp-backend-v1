@@ -9,6 +9,7 @@ import ClassSection from "../models/classSections";
 import Student from "../models/student";
 import StudentEnrollment from "../models/studentEnrollment";
 import StudentMonthlyFee from "../models/studentMonthlyFeeModel";
+import FeePayment from "../models/feePayment";
 
 const sequelize = new Sequelize({
     dialect: "postgres",
@@ -17,7 +18,8 @@ const sequelize = new Sequelize({
     username: "postgres",
     password: "postgres",
     database: "quick-erp",
-    models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom, ClassSection, Student, StudentEnrollment, StudentMonthlyFee],
+    models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom,
+        ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment],
     logging: false,
 });
 

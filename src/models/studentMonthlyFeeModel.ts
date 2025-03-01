@@ -1,7 +1,8 @@
 import {
+    AllowNull,
     BelongsTo,
     Column,
-    DataType,
+    DataType, Default,
     ForeignKey,
     Model,
     PrimaryKey,
@@ -14,7 +15,7 @@ import StudentEnrollment from "./studentEnrollment";
     indexes: [
         {
             unique: true,
-            fields: ["studentEnrollmentId", "month"],
+            fields: ["studentEnrollmentId", "dueDate"],
         },
     ],
 })
@@ -31,7 +32,7 @@ export default class StudentMonthlyFee extends Model {
     // The month for which this fee entry applies.
     // Here we use DATE ONLY to focus on the date portion (for example, setting day to 1) without time specifics.
     @Column({ type: DataType.DATEONLY })
-    declare month: Date;
+    declare dueDate: Date;
 
     // The fee due for this month (copied from StudentEnrollment.monthlyFee or overridden if necessary).
     @Column({ type: DataType.FLOAT })
@@ -45,6 +46,9 @@ export default class StudentMonthlyFee extends Model {
     // This can be calculated, but storing it directly could be useful for quick lookups.
     @Column({ type: DataType.FLOAT, defaultValue: 0 })
     declare balance: number;
+
+    @Default(null) @AllowNull(true) @Column({ type: DataType.DATEONLY }) // Only set when fully paid!
+    declare paidDate: Date;
 
     @BelongsTo(() => StudentEnrollment)
     declare studentEnrollment: StudentEnrollment;

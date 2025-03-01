@@ -11,6 +11,7 @@ import StudentEnrollment from "../../models/studentEnrollment";
 import logger from "../../lib/logger";
 import {getFirstDateOfMonth} from "../../utils/getFirstDateOfMonth";
 import {Op} from "sequelize";
+import StudentMonthlyFee from "../../models/studentMonthlyFeeModel";
 
 type enrollmentReqParams = {
     studentId: string,
@@ -154,6 +155,28 @@ export default async function createNewEnrollment(req: Express.Request, res: Exp
             isActive: body.isActive,
             subjects: classSectionData.subjects,
         }, {transaction})
+
+        // Create Fee entries
+        // Get total months
+        const monthCount = getMonthDifference(newEnrollment.sessionStart, newEnrollment.sessionEnd);
+
+
+        for (let i = 0; i < monthCount; i++) {
+            // Set up Due Date and increasing month 1 by 1
+            const dueDate = new Date(newEnrollment.sessionStart);
+            dueDate.setMonth(dueDate.getMonth() + i);
+
+            await StudentMonthlyFee.create({
+                id: `fee_${generateUUID()}`,
+                studentEnrollmentId: newEnrollmentId,
+                dueDate: dueDate,
+                feeDue: body.monthlyFee,
+                amountPaid: 0,
+                balance: body.monthlyFee,
+                paidDate: null,
+            }, {transaction})
+        }
+
 
         await transaction.commit()
 
