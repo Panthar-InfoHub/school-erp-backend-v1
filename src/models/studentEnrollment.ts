@@ -1,8 +1,19 @@
-import {Column, Model, PrimaryKey, Table, DataType, ForeignKey, BelongsTo, HasMany} from "sequelize-typescript";
+import {
+    Column,
+    Model,
+    PrimaryKey,
+    Table,
+    DataType,
+    ForeignKey,
+    BelongsTo,
+    HasMany,
+    Default
+} from "sequelize-typescript";
 import Student from "./student";
 import ClassRoom from "./classRoom";
 import ClassSection from "./classSections";
 import StudentMonthlyFee from "./studentMonthlyFeeModel";
+import {subject} from "../types";
 
   @Table({
     indexes: [
@@ -11,8 +22,8 @@ import StudentMonthlyFee from "./studentMonthlyFeeModel";
         name: "unique_student_enrollment_session",
         fields: [
           "studentId",
-          "classRoomId",
-          "classSectionId",
+          "classroomId",
+          "classroomSectionId",
           "sessionStart",
           "sessionEnd",
         ],
@@ -29,10 +40,10 @@ export default class StudentEnrollment extends Model {
     declare studentId: string;
 
     @Column @ForeignKey(() => ClassRoom)
-    declare classRoomId: string;
+    declare classroomId: string;
 
     @Column @ForeignKey(() => ClassSection)
-    declare classSectionId: string;
+    declare classroomSectionId: string;
 
     @Column({ type: DataType.DATE })
     declare sessionStart: Date;
@@ -43,10 +54,13 @@ export default class StudentEnrollment extends Model {
     @Column({type: DataType.FLOAT})
     declare monthlyFee: number;
 
-    @Column
+    @Column({type: DataType.JSON})
+    declare subjects: subject[]
+
+    @Default(true) @Column
     declare isActive: boolean;
 
-    @Column
+    @Default(false) @Column
     declare isComplete: boolean;
 
     @BelongsTo(() => Student)
