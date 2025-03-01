@@ -3,7 +3,18 @@ import ClassRoom from "./classRoom";
 import StudentEnrollment from "./studentEnrollment";
 
 
-@Table
+@Table({
+    indexes: [
+        {
+            unique: true,
+            name: "unique_class_section_name",
+            fields: [
+                "classRoomId",
+                "name",
+            ],
+        },
+    ]
+})
 export default class ClassSection extends Model {
 
     @PrimaryKey @Column declare id:string

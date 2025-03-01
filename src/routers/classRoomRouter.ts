@@ -5,6 +5,9 @@ import getClassroom from "../controller/classRoom/getClassroom";
 import deleteClassroom from "../controller/classRoom/deleteClassroom";
 import getClassrooms from "../controller/classRoom/getClassrooms";
 import createClassSection from "../controller/classRoomSection/createNewSection";
+import updateSection from "../controller/classRoomSection/UpdateClassSection";
+import deleteSection from "../controller/classRoomSection/deleteClassSection";
+import getClassSections from "../controller/classRoomSection/getClassSectionsHandler";
 
 
 const router = Express.Router();
@@ -17,9 +20,9 @@ router.put("/:classroomId", updateClassroom)
 router.delete("/:classroomId", deleteClassroom)
 
 // SECTION classroom Section
-router.get("/:classroomId/class-section") // Get All sections
+router.get("/:classroomId/class-section", getClassSections) // Get All sections
 router.post("/:classroomId/class-section", createClassSection) // Create a new section
-router.put("/:classroomId/class-section/:classroomSectionId")
-router.delete("/:classroomId/class-section/:classroomSectionId")
+router.put("/:classroomId/class-section/:classroomSectionId", updateSection)
+router.delete("/:classroomId/class-section/:classroomSectionId", deleteSection)
 
 export default router;
