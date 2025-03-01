@@ -6,6 +6,7 @@ import getSearchStudents from "../controller/student/getStudentsSearchHandler";
 import createNewEnrollment from "../controller/enrollment/newEnrollment";
 import payFee from "../controller/enrollment/payFee";
 import resetEnrollment from "../controller/enrollment/ResetEnrollmentFees";
+import updateEnrollment from "../controller/enrollment/enrollmentUpdate";
 
 const router = Express.Router();
 
@@ -19,9 +20,9 @@ router.post("/:studentId/enrollment/:enrollmentId/fee/pay", payFee)
 
 router.put("/:studentId", updateStudent) // update
 
-router.post("/:studentId/enrollment/:enrollmentId/reset", resetEnrollment) // reset it!
+router.put("/:studentId/enrollment/:enrollmentId/reset", resetEnrollment) // reset it!
 
-router.post("/:studentId/enrollment/:enrollmentId/update", ) // update it!
+router.patch("/:studentId/enrollment/:enrollmentId/update", updateEnrollment) // update it!
 
 router.post("/:studentId/image") // update image
 
