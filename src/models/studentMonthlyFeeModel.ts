@@ -48,7 +48,7 @@ export default class StudentMonthlyFee extends Model {
     declare balance: number;
 
     @Default(null) @AllowNull(true) @Column({ type: DataType.DATEONLY }) // Only set when fully paid!
-    declare paidDate: Date;
+    declare paidDate: Date | null;
 
     @BelongsTo(() => StudentEnrollment)
     declare studentEnrollment: StudentEnrollment;
