@@ -61,7 +61,7 @@ export default async function createNewEnrollment(req: Express.Request, res: Exp
 
     const body: enrollmentReqBody = req.body;
     const { studentId } = req.params;
-    logger.info({ body : JSON.stringify(body), params:  req.params})
+    logger.info(JSON.stringify({ body : body, params:  req.params}))
 
     /* Steps:
     * 1. Start transaction
