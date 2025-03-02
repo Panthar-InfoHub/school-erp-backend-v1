@@ -9,7 +9,7 @@ COPY package*.json ./
 
 # Temporarily set NODE_ENV to development to install dev dependencies
 ENV NODE_ENV=development
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the application code and run the build script
 COPY . .
