@@ -39,6 +39,7 @@ export default async function getSearchStudents(
     // Build WHERE conditions using Sequelize.where() to convert database values to lowercase before comparing.
     const whereCondition = {
       [Op.or]: [
+        where(fn("lower", col("id")), { [Op.like]: lowerSearchTerm }),
         where(fn("lower", col("name")), { [Op.like]: lowerSearchTerm }),
         where(fn("lower", col("searchName")), { [Op.like]: lowerSearchTerm }),
         where(fn("lower", col("address")), { [Op.like]: lowerSearchTerm }),

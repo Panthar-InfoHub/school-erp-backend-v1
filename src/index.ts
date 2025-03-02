@@ -7,15 +7,18 @@ import expressWinston from "express-winston";
 import "./lib/seq";
 import Express from "express";
 import cors from "cors"
+import Joi from "joi";
+import ResponseErr from "./error/responseErr";
+import generateUUID from "./utils/uuidGenerator";
 import employeeRouter from "./routers/employeeRouter";
 import vehicleRouter from "./routers/vehicleRouter";
 import studentRouter from "./routers/studentRouter";
 import classRoomRouter from "./routers/classRoomRouter";
-import ResponseErr from "./error/responseErr";
-import Joi from "joi";
-import generateUUID from "./utils/uuidGenerator";
+
+
 
 const PORT = Number(process.env.PORT) || 8080;
+
 
 
 const app = Express()
