@@ -13,11 +13,11 @@ import FeePayment from "../models/feePayment";
 
 const sequelize = new Sequelize({
     dialect: "postgres",
-    port: 5432,
-    host: "localhost",
-    username: "postgres",
-    password: "postgres",
-    database: "quick-erp",
+    port: Number(process.env.DB_PORT),
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom,
         ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment],
     logging: false,

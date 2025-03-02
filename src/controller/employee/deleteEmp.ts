@@ -3,6 +3,10 @@ import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import Employee from "../../models/employee";
 import ResponseErr from "../../error/responseErr";
+import sequelize from "../../lib/seq";
+import logger from "../../lib/logger";
+import Teacher from "../../models/teacher";
+import Driver from "../../models/driver";
 
 
 type deleteImpReqParams = {
@@ -22,11 +26,18 @@ export default async function deleteEmp(req: Express.Request, res: Express.Respo
         return
     }
 
+
     const employeeId = req.params.employeeId
+    const transaction = await sequelize.transaction()
 
     try {
 
-        const destroyedCount = await Employee.destroy({where: {id: employeeId}})
+        const destroyedCount = await Employee.destroy({where: {id: employeeId}, transaction})
+        await Teacher.destroy({where: {id: employeeId}, transaction})
+        await Driver.destroy({where: {id: employeeId}, transaction})
+
+        await transaction.commit()
+
         if (destroyedCount === 0) {
             next(new ResponseErr(
                  404,
@@ -34,6 +45,7 @@ export default async function deleteEmp(req: Express.Request, res: Express.Respo
                  "The identifying field did not result a successful search."))
             return
         }
+
         res.status(200).json({
             message: "Employee Deleted Successfully",
             destroyedCount,
@@ -42,6 +54,7 @@ export default async function deleteEmp(req: Express.Request, res: Express.Respo
 
     }
     catch (e) {
+        logger.error("Failed to delete employee", e)
         next(e)
     }
 

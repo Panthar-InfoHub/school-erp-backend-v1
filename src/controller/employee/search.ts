@@ -6,13 +6,13 @@ import {Op} from "sequelize"
 import logger from "../../lib/logger";
 
 type searchEmployeeReqQuery = {
-    q: string
+    q: string | undefined
     page: number
     limit: number
 }
 
 const searchEmployeeReqSchema = Joi.object<searchEmployeeReqQuery>({
-    q: Joi.string().required(),
+    q: Joi.string().allow("").optional(),
     page: Joi.number().required().min(1).default(1),
     limit: Joi.number().required().min(1).default(10)
 })
