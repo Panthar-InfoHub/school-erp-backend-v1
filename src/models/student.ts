@@ -33,7 +33,7 @@ export default class Student extends Model {
         allowNull: true,
         defaultValue: null,
     })
-    declare profileImg: Buffer;
+    declare profileImg: Buffer | null;
 
     @HasMany(() => StudentEnrollment, { onDelete: "CASCADE", hooks: true }) // Cascade delete
     declare studentEnrollments: StudentEnrollment[];

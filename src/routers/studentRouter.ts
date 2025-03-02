@@ -9,6 +9,7 @@ import resetEnrollment from "../controller/enrollment/ResetEnrollmentFees";
 import updateEnrollment from "../controller/enrollment/enrollmentUpdate";
 import multer from "../middleware/multer";
 import updateStudentProfileImg from "../controller/student/updateStudentProfileImg";
+import deleteStudentProfileImg from "../controller/student/deleteStudentProfileImage";
 
 const router = Express.Router();
 
@@ -29,6 +30,8 @@ router.patch("/:studentId/enrollment/:enrollmentId/update", updateEnrollment) //
 router.delete("/:studentId/enrollment/:enrollmentId")
 
 router.post("/:studentId/image", multer.single("profile_img"), updateStudentProfileImg) // update image
+
+router.delete("/:studentId/image", deleteStudentProfileImg) // delete image
 
 router.delete("/:studentId", deleteStudent) // delete student completely. (only if no payments exist)
 

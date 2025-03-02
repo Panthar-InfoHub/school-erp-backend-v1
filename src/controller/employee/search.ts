@@ -8,13 +8,15 @@ import logger from "../../lib/logger";
 type searchEmployeeReqQuery = {
     q: string | undefined
     page: number
-    limit: number
+    limit: number,
+    ascending: boolean | undefined,
 }
 
 const searchEmployeeReqSchema = Joi.object<searchEmployeeReqQuery>({
     q: Joi.string().allow("").optional(),
     page: Joi.number().required().min(1).default(1),
-    limit: Joi.number().required().min(1).default(10)
+    limit: Joi.number().required().min(1).default(10),
+    ascending: Joi.boolean().optional(),
 })
 
 export default async function searchEmployee(req: Express.Request, res: Express.Response, next:Express.NextFunction) {
@@ -28,6 +30,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
     const q = String(req.query.q)
     const page = Number(req.query.page)
     const limit = Number(req.query.limit)
+    const ascending = req.query.ascending === "true"
 
     try {
 
@@ -40,6 +43,12 @@ export default async function searchEmployee(req: Express.Request, res: Express.
                     {address: {[Op.like]: `%${q}%`}}
                 ]
             },
+            order: [
+                ["name", ascending ? "ASC" : "DESC"],
+                ["id", ascending ? "ASC" : "DESC"],
+                ["email", ascending ? "ASC" : "DESC"],
+                ["address", ascending ? "ASC" : "DESC"],
+            ],
             attributes: {
                 exclude: ['passwordHash'],
             },

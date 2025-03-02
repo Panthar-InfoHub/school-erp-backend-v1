@@ -7,9 +7,10 @@ import logger from "../../lib/logger";
 import Student from "../../models/student";
 
 const searchStudentsQuerySchema = Joi.object({
-  q: Joi.string().required(),
+  q: Joi.optional().required(),
   page: Joi.number().integer().positive().required(),
   limit: Joi.number().integer().positive().required(),
+  ascending: Joi.boolean().optional(),
 });
 
 export default async function getSearchStudents(
@@ -27,6 +28,7 @@ export default async function getSearchStudents(
   const q = String(req.query.q);
   const page = Number(req.query.page);
   const limit = Number(req.query.limit);
+  const ascending = req.query.ascending === "true";
   const offset = (page - 1) * limit;
 
   // Convert search term to lowercase with wildcards
@@ -71,8 +73,8 @@ export default async function getSearchStudents(
     const { rows: students, count } = await Student.findAndCountAll({
       where: whereCondition,
       order: [
-        [orderPriority, "ASC"],
-        ["name", "ASC"],
+        [orderPriority, ascending ? "ASC" : "DESC"],
+        ["name", ascending ? "ASC" : "DESC"],
       ],
       offset,
       limit,
