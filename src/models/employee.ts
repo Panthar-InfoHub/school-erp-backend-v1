@@ -38,6 +38,13 @@ export default class Employee extends Model {
     @Default(false) @Column
     declare isFired: boolean
 
+    @Column({
+        type: DataType.BLOB("long"), // 'long' allows for large files
+        allowNull: true,
+        defaultValue: null,
+    })
+    declare profileImg: Buffer | null;
+
     @HasOne(() => Admin)
     declare admin: Admin;
 

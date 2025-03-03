@@ -10,6 +10,8 @@ import updateEnrollment from "../controller/enrollment/enrollmentUpdate";
 import multer from "../middleware/multer";
 import updateStudentProfileImg from "../controller/student/updateStudentProfileImg";
 import deleteStudentProfileImg from "../controller/student/deleteStudentProfileImage";
+import deleteEnrollment from "../controller/enrollment/deleteEnrollment";
+import getStudentData from "../controller/student/getStudent";
 
 const router = Express.Router();
 
@@ -21,13 +23,15 @@ router.post("/:studentId/new-enrollment", createNewEnrollment) // create new enr
 
 router.post("/:studentId/enrollment/:enrollmentId/fee/pay", payFee)
 
+router.get("/:studentId", getStudentData) // get
+
 router.put("/:studentId", updateStudent) // update
 
 router.put("/:studentId/enrollment/:enrollmentId/reset", resetEnrollment) // reset it!
 
 router.patch("/:studentId/enrollment/:enrollmentId/update", updateEnrollment) // update it!
 
-router.delete("/:studentId/enrollment/:enrollmentId")
+router.delete("/:studentId/enrollment/:enrollmentId", deleteEnrollment)
 
 router.post("/:studentId/image", multer.single("profile_img"), updateStudentProfileImg) // update image
 
