@@ -98,7 +98,7 @@ export default async function deleteClassroom(
         await classroom.destroy({ transaction });
         await transaction.commit();
 
-        logger.info(`Classroom and its sections deleted successfully: ${classroomId}`);
+        logger.info(`Classroom and its sections deleted successfully: ${classroomId}. force: ${req.body.force}`);
         res.status(200).json({
             message: "Classroom and its sections deleted successfully.",
         });

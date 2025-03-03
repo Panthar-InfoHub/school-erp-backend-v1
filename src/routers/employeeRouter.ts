@@ -8,6 +8,8 @@ import getEmployeeData from "../controller/employee/getEmployee";
 import multer from "../middleware/multer";
 import deleteEmployeeProfileImg from "../controller/employee/deleteEmployeeProfileImage";
 import updateEmployeeProfileImg from "../controller/employee/updateEmployeeProfileImg";
+import makeAdmin from "../controller/admin/makeAdmin";
+import removeAdmin from "../controller/admin/removeAdmin";
 
 // Mounted at /employee
 const router = Express.Router();
@@ -32,6 +34,10 @@ router.put("/:employeeId", updateEmployee);
 router.delete("/:employeeId", deleteEmp);
 
 router.post("/login", loginEmployee)
+
+router.post("/:employeeId/make-admin", makeAdmin)
+router.post("/:employeeId/remove-admin", removeAdmin)
+
 
 
 
