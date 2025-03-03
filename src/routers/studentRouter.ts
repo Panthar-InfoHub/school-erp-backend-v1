@@ -12,6 +12,9 @@ import updateStudentProfileImg from "../controller/student/updateStudentProfileI
 import deleteStudentProfileImg from "../controller/student/deleteStudentProfileImage";
 import deleteEnrollment from "../controller/enrollment/deleteEnrollment";
 import getStudentData from "../controller/student/getStudent";
+import createExamEntry from "../controller/enrollment/createExamEntry";
+import deleteExamEntry from "../controller/enrollment/deleteExamEntry";
+import updateExamEntry from "../controller/enrollment/updateExamEntry";
 
 const router = Express.Router();
 
@@ -39,6 +42,10 @@ router.delete("/:studentId/image", deleteStudentProfileImg) // delete image
 
 router.delete("/:studentId", deleteStudent) // delete student completely. (only if no payments exist)
 
+router.post("/:studentId/enrollment/:enrollmentId/exam/new", createExamEntry)
 
+router.patch("/:studentId/enrollment/:enrollmentId/exam/:examEntryId", updateExamEntry)
+
+router.delete("/:studentId/enrollment/:enrollmentId/exam/:examEntryId", deleteExamEntry)
 
 export default router;

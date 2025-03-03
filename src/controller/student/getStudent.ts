@@ -6,6 +6,8 @@ import logger from "../../lib/logger";
 import Student from "../../models/student";
 import StudentEnrollment from "../../models/studentEnrollment";
 import ResponseErr from "../../error/responseErr";
+import ExamEntry from "../../models/examEntry";
+import StudentMonthlyFee from "../../models/studentMonthlyFeeModel";
 
 const getStudentParamsSchema = Joi.object({
     studentId: Joi.string().required(),
@@ -33,6 +35,15 @@ export default async function getStudentData(
     const student = await Student.findByPk(req.params.studentId, {
         include: [{
             model: StudentEnrollment,
+            include: [
+                {
+                    model: ExamEntry
+                },
+                {
+                    model: StudentMonthlyFee
+                }
+            ],
+
         }]
     })
 

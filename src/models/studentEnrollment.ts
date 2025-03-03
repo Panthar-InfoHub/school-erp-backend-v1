@@ -14,6 +14,7 @@ import ClassRoom from "./classRoom";
 import ClassSection from "./classSections";
 import StudentMonthlyFee from "./studentMonthlyFeeModel";
 import {subject} from "../types";
+import ExamEntry from "./examEntry";
 
   @Table({
     indexes: [
@@ -63,7 +64,7 @@ export default class StudentEnrollment extends Model {
     @Default(false) @Column
     declare isComplete: boolean;
 
-    @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade delete when the student is deleted
+    @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade deletes when the student is deleted
     declare student: Student;
 
 
@@ -75,6 +76,9 @@ export default class StudentEnrollment extends Model {
 
     @HasMany(() => StudentMonthlyFee, { onDelete: "CASCADE", hooks: true }) // Cascade delete for monthly fees
     declare monthlyFees: StudentMonthlyFee[];
+
+    @HasMany(() => ExamEntry)
+    declare examDetails: ExamEntry[];
 
 
 }

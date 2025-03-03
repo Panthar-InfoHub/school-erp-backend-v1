@@ -1,5 +1,6 @@
 import {AllowNull, Column, DataType, Default, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
 import StudentEnrollment from "./studentEnrollment";
+import ExamEntry from "./examEntry";
 
 
 @Table
@@ -38,7 +39,8 @@ export default class Student extends Model {
     @HasMany(() => StudentEnrollment, { onDelete: "CASCADE", hooks: true }) // Cascade delete
     declare studentEnrollments: StudentEnrollment[];
 
-
+    @HasMany(() => ExamEntry, {onDelete: "CASCADE", hooks: true})
+    declare examEntries: ExamEntry[];
 }
 
 type identityEntry = {

@@ -10,6 +10,7 @@ import Student from "../models/student";
 import StudentEnrollment from "../models/studentEnrollment";
 import StudentMonthlyFee from "../models/studentMonthlyFeeModel";
 import FeePayment from "../models/feePayment";
+import ExamEntry from "../models/examEntry";
 
 const sequelize = new Sequelize({
     dialect: "postgres",
@@ -19,7 +20,7 @@ const sequelize = new Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom,
-        ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment],
+        ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment, ExamEntry],
     logging: false,
 });
 
