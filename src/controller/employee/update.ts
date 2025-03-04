@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import Teacher from "../../models/teacher";
 import Driver from "../../models/driver";
 import sequelize from "../../lib/seq";
+import {identityEntry} from "../../types";
 
 type updateEmpReqParams = {
     employeeId: string
@@ -17,7 +18,7 @@ const updateEmpReqParamsSchema = Joi.object<updateEmpReqParams>({
 })
 
 type updateEmpReqBody = {
-    passwordHash: string | undefined, // Used as helper in updating password
+    passwordHash: string | undefined, // Used as a helper in updating password
     name: string | undefined,
     password: string | undefined,
     address: string | undefined
@@ -32,6 +33,7 @@ type updateEmpReqBody = {
     phone: string | undefined,
     isActive: boolean | undefined,
     isFired: boolean | undefined,
+    ids?: Array<identityEntry>,
 }
 
 const updateEmpReqBodySchema = Joi.object<updateEmpReqBody>({
@@ -49,6 +51,14 @@ const updateEmpReqBodySchema = Joi.object<updateEmpReqBody>({
     phone: Joi.string().allow('').optional(),
     isActive: Joi.boolean().allow('').optional(),
     isFired: Joi.boolean().allow('').optional(),
+    ids: Joi.array()
+    .items(
+      Joi.object({
+        idDocName: Joi.string().required(),
+        idDocValue: Joi.string().required(),
+      })
+    )
+    .optional(),
 }).custom((value, helpers) => {
     if (Object.values(value).every((field) => field === undefined)) {
         return helpers.error("any.custom", {message: "All fields cannot be undefined"});

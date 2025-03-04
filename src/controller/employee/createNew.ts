@@ -8,6 +8,7 @@ import generateUUID from "../../utils/uuidGenerator";
 import sequelize from "../../lib/seq";
 import Teacher from "../../models/teacher";
 import Driver from "../../models/driver";
+import {identityEntry} from "../../types";
 
 
 type createEmployeeRequest = {
@@ -22,6 +23,7 @@ type createEmployeeRequest = {
     workRole: string,
     salary: number,
     email: string,
+     ids: identityEntry[],
     phone: string | undefined,
     isActive: boolean,
     isFired: boolean,
@@ -37,6 +39,10 @@ const createEmployeeSchema = Joi.object<createEmployeeRequest>({
     motherPhone: Joi.string().allow('').optional(),
     dateOfBirth: Joi.date().required(),
     workRole: Joi.string().required(),
+    ids: Joi.array().items(Joi.object({
+        idDocName: Joi.string().required(),
+        idDocValue: Joi.string().required()
+    })).required(),
     salary: Joi.number().min(0).default(0),
     email: Joi.string().email().required(),
     phone: Joi.string().optional(),

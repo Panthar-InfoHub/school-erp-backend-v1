@@ -5,6 +5,7 @@ import joiValidator from "../../middleware/joiValidator";
 import Student from "../../models/student";
 import sequelize from "../../lib/seq";
 import ResponseErr from "../../error/responseErr";
+import {identityEntry} from "../../types";
 
 type UpdateStudentRequest = {
   name?: string;
@@ -14,10 +15,7 @@ type UpdateStudentRequest = {
   motherName?: string;
   fatherPhone?: string;
   motherPhone?: string;
-  ids?: Array<{
-    idDocName: string;
-    idDocValue: string;
-  }>;
+  ids?: Array<identityEntry>;
   isActive?: boolean;
 };
 

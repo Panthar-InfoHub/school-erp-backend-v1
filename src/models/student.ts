@@ -1,6 +1,7 @@
 import {AllowNull, Column, DataType, Default, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
 import StudentEnrollment from "./studentEnrollment";
 import ExamEntry from "./examEntry";
+import {identityEntry} from "../types";
 
 
 @Table
@@ -26,7 +27,7 @@ export default class Student extends Model {
 
     @Default(true) @Column declare isActive:boolean
 
-    @Default(false) @Column({type: DataType.JSON})
+    @Default([]) @Column({type: DataType.JSON})
     declare ids: identityEntry[];
 
     @Column({
@@ -43,7 +44,3 @@ export default class Student extends Model {
     declare examEntries: ExamEntry[];
 }
 
-type identityEntry = {
-    idDocName:string,
-    idDocValue:string
-}

@@ -2,6 +2,7 @@ import {Column, DataType, Default, HasOne, Model, PrimaryKey, Table, Unique} fro
 import Admin from "./admin";
 import Teacher from "./teacher";
 import Driver from "./driver";
+import {identityEntry} from "../types";
 
 
 @Table
@@ -25,6 +26,9 @@ export default class Employee extends Model {
     @Default("") @Column declare fatherPhone: string
 
     @Default("") @Column declare motherPhone: string
+
+    @Default([]) @Column({type: DataType.JSON})
+    declare ids: identityEntry[];
 
     @Column
     declare workRole: string

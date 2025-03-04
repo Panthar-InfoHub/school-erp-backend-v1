@@ -4,6 +4,7 @@ import joiValidator from "../../middleware/joiValidator";
 import Student from "../../models/student";
 import generateUUID from "../../utils/uuidGenerator";
 import sequelize from "../../lib/seq";
+import {identityEntry} from "../../types";
 
 type createStudentRequest = {
     name: string,
@@ -13,7 +14,7 @@ type createStudentRequest = {
     motherName: string,
     fatherPhone: string | undefined ,
     motherPhone: string | undefined,
-    ids: {idDocName:string, idDocValue:string}[]
+    ids: identityEntry[]
     isActive: boolean,
 }
 

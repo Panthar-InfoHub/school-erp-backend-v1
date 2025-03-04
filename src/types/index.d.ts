@@ -13,3 +13,8 @@ export interface subjectResult extends subject {
     totalMarksPractical: number | null,
     totalMarks: number | null,
 }
+
+export interface identityEntry {
+    idDocName:string,
+    idDocValue:string
+}
