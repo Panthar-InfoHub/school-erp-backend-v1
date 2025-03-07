@@ -23,7 +23,8 @@ export default async function getClassroom(
     // Validate the request params
     const paramsError = joiValidator(getClassroomParamsSchema, "params", req, res);
     if (paramsError) {
-        return next(paramsError);
+        next(paramsError);
+        return
     }
 
     const { classroomId } = req.params;

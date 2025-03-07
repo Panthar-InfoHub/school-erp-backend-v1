@@ -1,5 +1,5 @@
 import Express from "express";
-import createEmployee from "../controller/employee/createNew";
+import createEmployee from "../controller/employee/createNewEmployee";
 import searchEmployee from "../controller/employee/search";
 import updateEmployee from "../controller/employee/update";
 import deleteEmp from "../controller/employee/deleteEmp";
@@ -10,34 +10,35 @@ import deleteEmployeeProfileImg from "../controller/employee/deleteEmployeeProfi
 import updateEmployeeProfileImg from "../controller/employee/updateEmployeeProfileImg";
 import makeAdmin from "../controller/admin/makeAdmin";
 import removeAdmin from "../controller/admin/removeAdmin";
+import addEmployeeAttendance from "../controller/employee/addEmployeeAttendance";
+import updateEmployeeAttendance from "../controller/employee/updateEmployeeAttendance";
 
 // Mounted at /employee
 const router = Express.Router();
 
 // Get all staff (With Pagination)
 router.get("/", searchEmployee);
-
 router.get("/:employeeId", getEmployeeData);
 
 
 // Add employee
 router.post("/new", createEmployee);
+router.post("/login", loginEmployee)
 
 router.post("/:employeeId/image", multer.single("profile_img"), updateEmployeeProfileImg) // update image
-
-router.delete("/:employeeId/image", deleteEmployeeProfileImg) // delete image
-
-// Update
-router.put("/:employeeId", updateEmployee);
-
-// Delete
-router.delete("/:employeeId", deleteEmp);
-
-router.post("/login", loginEmployee)
+router.post("/:employeeId/attendance", addEmployeeAttendance)
 
 router.post("/:employeeId/make-admin", makeAdmin)
 router.post("/:employeeId/remove-admin", removeAdmin)
 
+
+router.put("/:employeeId", updateEmployee);
+
+router.delete("/:employeeId/image", deleteEmployeeProfileImg) // delete image
+router.delete("/:employeeId", deleteEmp);
+
+
+router.patch("/:employeeId/attendance/:attendanceId", updateEmployeeAttendance)
 
 
 

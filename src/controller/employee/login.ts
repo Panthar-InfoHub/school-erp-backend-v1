@@ -7,6 +7,7 @@ import Employee from "../../models/employee";
 import Admin from "../../models/admin";
 import Teacher from "../../models/teacher";
 import Driver from "../../models/driver";
+import joiValidator from "../../middleware/joiValidator";
 
 const loginSchema = Joi.object({
     email: Joi.string().email().required(),
@@ -15,13 +16,13 @@ const loginSchema = Joi.object({
 
 const loginEmployee = async (req: Express.Request, res: Express.Response, next:Express.NextFunction) => {
     // Validate the request body using Joi
-    const { error, value } = loginSchema.validate(req.body);
+    const error = joiValidator(loginSchema, "body", req, res);
     if (error) {
-        res.status(400).json({ error: error.details[0].message });
+        next(error);
         return
     }
 
-    const { email, password } = value;
+    const { email, password } = req.body;
 
     try {
         // Find the employee by email, including their related records to determine roles

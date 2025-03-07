@@ -15,8 +15,6 @@ import vehicleRouter from "./routers/vehicleRouter";
 import studentRouter from "./routers/studentRouter";
 import classRoomRouter from "./routers/classRoomRouter";
 
-
-
 const PORT = Number(process.env.PORT) || 8080;
 
 
@@ -26,7 +24,7 @@ app.use(cors({origin: "*"}))
 app.use(Express.json())
 app.use(Express.urlencoded({ extended: true }))
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
 
     const requestId = req.headers["x-request-id"]
     if (requestId) {
@@ -67,7 +65,7 @@ app.get("/", (req: Express.Request, res: Express.Response) => {
 })
 
 
-app.use((err:any, req:Express.Request, res:Express.Response, next:Express.NextFunction) => {
+app.use((err:any, req:Express.Request, res:Express.Response, _:Express.NextFunction) => {
 
     if (err instanceof Joi.ValidationError) {
         res.status(400).json({
@@ -91,6 +89,7 @@ app.use((err:any, req:Express.Request, res:Express.Response, next:Express.NextFu
             name:  err.name,
             details: process.env.NODE_ENV === "development" ? err.stack : undefined
         })
+        return;
     }
 
     res.status(500).json(
@@ -99,12 +98,13 @@ app.use((err:any, req:Express.Request, res:Express.Response, next:Express.NextFu
             details: undefined
         }
     )
-    next()
     return;
-
+    
 })
 
 app.listen(PORT, () => {
     console.log(`Server is live on port ${PORT}`);
 })
+
+
 

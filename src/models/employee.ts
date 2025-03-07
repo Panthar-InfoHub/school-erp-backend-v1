@@ -1,8 +1,9 @@
-import {Column, DataType, Default, HasOne, Model, PrimaryKey, Table, Unique} from "sequelize-typescript";
+import {Column, DataType, Default, HasMany, HasOne, Model, PrimaryKey, Table, Unique} from "sequelize-typescript";
 import Admin from "./admin";
 import Teacher from "./teacher";
 import Driver from "./driver";
 import {identityEntry} from "../types";
+import EmployeeAttendance from "./employeeAttendance";
 
 
 @Table
@@ -57,6 +58,9 @@ export default class Employee extends Model {
 
     @HasOne(() => Driver)
     declare driverData: Driver;
+    
+    @HasMany(() => EmployeeAttendance)
+    declare attendance: EmployeeAttendance[]
 
 
 }

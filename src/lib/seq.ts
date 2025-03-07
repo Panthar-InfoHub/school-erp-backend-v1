@@ -1,3 +1,4 @@
+import {startAttendanceScheduler} from "../cron/employeeAttendance";
 import {Sequelize} from "sequelize-typescript";
 import Employee from "../models/employee";
 import Teacher from "../models/teacher";
@@ -11,6 +12,7 @@ import StudentEnrollment from "../models/studentEnrollment";
 import StudentMonthlyFee from "../models/studentMonthlyFeeModel";
 import FeePayment from "../models/feePayment";
 import ExamEntry from "../models/examEntry";
+import EmployeeAttendance from "../models/employeeAttendance";
 
 const sequelize = new Sequelize({
     dialect: "postgres",
@@ -20,11 +22,14 @@ const sequelize = new Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom,
-        ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment, ExamEntry],
+        ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment, ExamEntry, EmployeeAttendance],
     logging: false,
 });
 
 export default sequelize;
 
 sequelize.sync({alter: true})
-    .then(() => console.log("DB Synced"));
+    .then(() => {
+        console.log("DB Synced")
+        startAttendanceScheduler()
+    });

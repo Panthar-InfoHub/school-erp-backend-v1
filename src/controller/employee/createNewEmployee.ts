@@ -23,7 +23,7 @@ type createEmployeeRequest = {
     workRole: string,
     salary: number,
     email: string,
-     ids: identityEntry[],
+    ids: identityEntry[],
     phone: string | undefined,
     isActive: boolean,
     isFired: boolean,
