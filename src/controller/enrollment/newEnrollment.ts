@@ -148,6 +148,7 @@ export default async function createNewEnrollment(req: Express.Request, res: Exp
         const newEnrollment = await StudentEnrollment.create({
             id: newEnrollmentId,
             studentId: studentId,
+            classroomId: classSectionData.classRoomId,
             classroomSectionId: body.classRoomSectionId,
             sessionStart: getFirstDateOfMonth(body.sessionStartDate),
             sessionEnd: getFirstDateOfMonth(body.sessionEndDate),
