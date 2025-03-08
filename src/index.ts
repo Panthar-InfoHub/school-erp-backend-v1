@@ -14,6 +14,7 @@ import employeeRouter from "./routers/employeeRouter";
 import vehicleRouter from "./routers/vehicleRouter";
 import studentRouter from "./routers/studentRouter";
 import classRoomRouter from "./routers/classRoomRouter";
+import {getDashboardStatus} from "./controller/admin/getDashboardStats";
 
 const PORT = Number(process.env.PORT) || 8080;
 
@@ -63,6 +64,8 @@ app.get("/", (req: Express.Request, res: Express.Response) => {
     res.send("Server is live!");
     return
 })
+
+app.get("/dash-status", getDashboardStatus)
 
 
 app.use((err:any, req:Express.Request, res:Express.Response, _:Express.NextFunction) => {
