@@ -30,6 +30,9 @@ export default class Employee extends Model {
 
     @Default([]) @Column({type: DataType.JSON})
     declare ids: identityEntry[];
+    
+    @Default("") @Column
+    declare phone: string ;
 
     @Column
     declare workRole: string
