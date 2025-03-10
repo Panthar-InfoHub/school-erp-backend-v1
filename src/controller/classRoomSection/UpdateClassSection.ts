@@ -29,7 +29,7 @@ const updateSectionBodySchema = Joi.object<UpdateSectionRequest>({
       code: Joi.string().required(),
       theoryExam: Joi.boolean().required(),
       practicalExam: Joi.boolean().required(),
-    })
+    }).optional()
   ),
 }).min(1); // Ensure at least one key is provided
 
@@ -56,14 +56,7 @@ export default async function updateSection(
     next(paramsError);
     return;
   }
-
-  // Custom validation: Check if the body has at least one key
-  if (Object.keys(req.body).length === 0) {
-    return next(
-      new ResponseErr(400, "Invalid Request", "At least one update field is required in the body.")
-    );
-  }
-
+  
   const { classroomId, classroomSectionId } = req.params;
   const body: UpdateSectionRequest = req.body;
 
