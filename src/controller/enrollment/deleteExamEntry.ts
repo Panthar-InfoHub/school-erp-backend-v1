@@ -45,7 +45,7 @@ export default async function deleteExamEntry(req: Request, res: Response, next:
 		
 		res.status(200).json({
 			message: "Exam entry deleted successfully",
-			destroyedCount,
+					destroyedCount,
 		})
 		
 		

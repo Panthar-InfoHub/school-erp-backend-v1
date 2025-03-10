@@ -5,11 +5,11 @@ import sequelize from "../../lib/seq";
 import StudentEnrollment from "../../models/studentEnrollment";
 import logger from "../../lib/logger";
 
-type DeleteEnrollmentRequestBody = {
+type DeleteEnrollmentRequestQuery = {
   force?: boolean;
 };
 
-const deleteEnrollmentRequestBodySchema = Joi.object({
+const deleteEnrollmentRequestQuerySchema = Joi.object({
   force: Joi.boolean().optional(),
 });
 
@@ -19,7 +19,7 @@ export default async function deleteEnrollment(
   next: NextFunction
 ): Promise<void> {
   // Validate request body
-  const error = joiValidator(deleteEnrollmentRequestBodySchema, "body", req, res);
+  const error = joiValidator(deleteEnrollmentRequestQuerySchema, "query", req, res);
   if (error) {
     next(error);
     return;
@@ -27,7 +27,7 @@ export default async function deleteEnrollment(
 
   // Get parameters and force flag
   const { studentId, enrollmentId } = req.params;
-  const force: boolean = (req.body as DeleteEnrollmentRequestBody).force || false;
+  const force: boolean = Boolean(req.query.force) || false;
 
   logger.info(
     `Received request to delete enrollment entry ${enrollmentId} for student ${studentId} with force flag: ${force}`

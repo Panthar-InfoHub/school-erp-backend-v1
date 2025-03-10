@@ -12,13 +12,18 @@ import makeAdmin from "../controller/admin/makeAdmin";
 import removeAdmin from "../controller/admin/removeAdmin";
 import addEmployeeAttendance from "../controller/employee/addEmployeeAttendance";
 import updateEmployeeAttendance from "../controller/employee/updateEmployeeAttendance";
+import getDailyAttendance from "../controller/employee/getDailyAttendance";
+import getEmployeeAttendance from "../controller/employee/getEmployeeAttendance";
 
 // Mounted at /employee
 const router = Express.Router();
 
 // Get all staff (With Pagination)
 router.get("/", searchEmployee);
+router.get("/attendance", getDailyAttendance);
 router.get("/:employeeId", getEmployeeData);
+router.get("/:employeeId/attendance", getEmployeeAttendance);
+
 
 
 // Add employee
@@ -27,6 +32,7 @@ router.post("/login", loginEmployee)
 
 router.post("/:employeeId/image", multer.single("profile_img"), updateEmployeeProfileImg) // update image
 router.post("/:employeeId/attendance", addEmployeeAttendance)
+
 
 router.post("/:employeeId/make-admin", makeAdmin)
 router.post("/:employeeId/remove-admin", removeAdmin)
