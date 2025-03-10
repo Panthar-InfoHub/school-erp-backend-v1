@@ -13,11 +13,11 @@ const deleteSectionParamsSchema = Joi.object({
     classroomSectionId: Joi.string().pattern(/^section_/).required(),
 });
 
-type deleteSectionBody = {
+type deleteSectionQuery = {
     force: boolean
 }
 
-const deleteSectionBodySchema = Joi.object<deleteSectionBody>({
+const deleteSectionQuerySchema = Joi.object<deleteSectionQuery>({
     force: Joi.boolean().optional(),
 })
 
@@ -32,14 +32,14 @@ export default async function deleteSection(
         next(paramsError);
         return;
     }
-    const bodyErr = joiValidator(deleteSectionBodySchema, "body", req, res);
+    const bodyErr = joiValidator(deleteSectionQuerySchema, "query", req, res);
     if (bodyErr) {
         next(bodyErr);
         return;
     }
 
     const { classroomId, classroomSectionId } = req.params;
-    const { force } = req.body;
+    const { force }  = req.query;
 
     try {
         // Ensure the classroom exists
@@ -86,7 +86,7 @@ export default async function deleteSection(
         }
 
         // Check if the section has any enrollment entries
-        if (section.studentEnrollments && section.studentEnrollments.length > 0 && !force) {
+        if (section.studentEnrollments && section.studentEnrollments.length > 0 && !Boolean(force)) {
             logger.error(`Section ${classroomSectionId} has enrollments and cannot be deleted.`);
             next(
                 new ResponseErr(

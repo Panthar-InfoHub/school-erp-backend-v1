@@ -7,7 +7,7 @@ import logger from "../../lib/logger";
 import Student from "../../models/student";
 
 const searchStudentsQuerySchema = Joi.object({
-  q: Joi.optional().required(),
+  q: Joi.optional(),
   page: Joi.number().integer().positive().required(),
   limit: Joi.number().integer().positive().required(),
   ascending: Joi.boolean().optional(),

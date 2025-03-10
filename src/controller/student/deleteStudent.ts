@@ -4,19 +4,20 @@ import sequelize from "../../lib/seq";
 import logger from "../../lib/logger";
 import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
+import ResponseErr from "../../error/responseErr";
 
 type deleteStudentBody= {
     force?: boolean;
 }
 
-const deleteStudentBodySchema = Joi.object<deleteStudentBody>({
+const deleteStudentQuerySchema = Joi.object<deleteStudentBody>({
     force: Joi.boolean().optional(),
 })
 
 export default async function deleteStudent(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
     const { studentId } = req.params;
 
-    const error = joiValidator(deleteStudentBodySchema, "body", req, res)
+    const error = joiValidator(deleteStudentQuerySchema, "query", req, res)
     if (error) {
         next(error)
         return
@@ -43,7 +44,11 @@ export default async function deleteStudent(req: Express.Request, res: Express.R
         if (student.studentEnrollments && student.studentEnrollments.length > 0) {
             for (const enrollment of student.studentEnrollments) {
                 if (enrollment.monthlyFees && enrollment.monthlyFees.length > 0 && !req.body.force) {
-                    res.status(400).json({ error: "Cannot delete student with fee information in enrollment entries. Use force flag to delete." });
+                    next(new ResponseErr(
+                        400,
+                        "Student Deletion Error",
+                        "Cannot delete student as there are fee payment entries associated with it."
+                    ))
                     return;
                 } else {
                     logger.info(`Deleting enrollment entry with id: ${enrollment.id}`);
