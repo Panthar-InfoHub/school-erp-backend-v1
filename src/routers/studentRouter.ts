@@ -15,6 +15,7 @@ import getStudentData from "../controller/student/getStudent";
 import createExamEntry from "../controller/enrollment/createExamEntry";
 import deleteExamEntry from "../controller/enrollment/deleteExamEntry";
 import updateExamEntry from "../controller/enrollment/updateExamEntry";
+import {getEnrollmentDetails} from "../controller/enrollment/getEnrollmentDetails";
 
 const router = Express.Router();
 
@@ -27,6 +28,8 @@ router.post("/:studentId/new-enrollment", createNewEnrollment) // create new enr
 router.post("/:studentId/enrollment/:enrollmentId/fee/pay", payFee)
 
 router.get("/:studentId", getStudentData) // get
+
+router.get(":/studentId/enrollment/:enrollmentId", getEnrollmentDetails)
 
 router.put("/:studentId", updateStudent) // update
 
@@ -41,6 +44,7 @@ router.post("/:studentId/image", multer.single("profile_img"), updateStudentProf
 router.delete("/:studentId/image", deleteStudentProfileImg) // delete image
 
 router.delete("/:studentId", deleteStudent) // delete student completely. (only if no payments exist)
+
 
 router.post("/:studentId/enrollment/:enrollmentId/exam/new", createExamEntry)
 
