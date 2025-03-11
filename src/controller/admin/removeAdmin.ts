@@ -8,13 +8,13 @@ import logger from "../../lib/logger";
 
 type removeAdminReq = {
     targetEmployeeId: string
-    adminEmployeeId: string
 }
 
 const removeAdminRequestSchema = Joi.object<removeAdminReq>({
     targetEmployeeId: Joi.string().required(),
-    adminEmployeeId: Joi.string().required()
 })
+
+
 
 
 export default async function removeAdmin(req: Request, res: Response, next: NextFunction) {
@@ -25,17 +25,17 @@ export default async function removeAdmin(req: Request, res: Response, next: Nex
         return
     }
 
+    const {employeeId} = req.params
+    const { targetEmployeeId } : removeAdminReq = req.body;
 
-    const { targetEmployeeId, adminEmployeeId } : removeAdminReq = req.body;
-
-    if (targetEmployeeId === adminEmployeeId) {
+    if (targetEmployeeId === employeeId) {
         next(new ResponseErr(400, "Invalid Request", "Cannot assign admin permissions to themselves."))
         return
     }
 
     try {
 
-        const adminEmployee = await Admin.findByPk(adminEmployeeId);
+        const adminEmployee = await Admin.findByPk(employeeId);
         if (!adminEmployee) {
             next(new ResponseErr(404, "Admin Not Found", "The admin id provided does not exist."))
             return

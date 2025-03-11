@@ -8,12 +8,10 @@ import logger from "../../lib/logger";
 
 type makeAdminRequest = {
     targetEmployeeId: string
-    adminEmployeeId: string
 }
 
 const makeAdminRequestSchema = Joi.object<makeAdminRequest>({
     targetEmployeeId: Joi.string().required(),
-    adminEmployeeId: Joi.string().required()
 })
 
 
@@ -25,17 +23,17 @@ export default async function makeAdmin(req: Request, res: Response, next: NextF
         return
     }
 
+    const {employeeId} = req.params
+    const { targetEmployeeId } : makeAdminRequest = req.body;
 
-    const { targetEmployeeId, adminEmployeeId } : makeAdminRequest = req.body;
-
-    if (targetEmployeeId === adminEmployeeId) {
+    if (targetEmployeeId === employeeId) {
         next(new ResponseErr(400, "Invalid Request", "Cannot make an employee admin of themselves."))
         return
     }
 
     try {
 
-        const adminEmployee = await Admin.findByPk(adminEmployeeId);
+        const adminEmployee = await Admin.findByPk(employeeId);
         if (!adminEmployee) {
             next(new ResponseErr(404, "Admin Not Found", "The admin id provided does not exist."))
             return
