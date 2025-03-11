@@ -12,6 +12,7 @@ import logger from "../../lib/logger";
 import {getFirstDateOfMonth} from "../../utils/getFirstDateOfMonth";
 import {Op} from "sequelize";
 import StudentMonthlyFee from "../../models/studentMonthlyFeeModel";
+import ExamEntry from "../../models/examEntry";
 
 type enrollmentReqParams = {
     studentId: string,
@@ -177,7 +178,10 @@ export default async function createNewEnrollment(req: Express.Request, res: Exp
                 paidDate: null,
             }, {transaction})
         }
-
+        
+        await newEnrollment.reload({
+            include: [StudentMonthlyFee, ClassRoom, ClassSection, Student, ExamEntry], transaction,
+        })
 
         await transaction.commit()
 
