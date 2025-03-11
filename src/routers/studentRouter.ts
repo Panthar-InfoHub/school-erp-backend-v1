@@ -29,7 +29,7 @@ router.post("/:studentId/enrollment/:enrollmentId/fee/pay", payFee)
 
 router.get("/:studentId", getStudentData) // get
 
-router.get(":/studentId/enrollment/:enrollmentId", getEnrollmentDetails)
+router.get("/:studentId/enrollment/:enrollmentId", getEnrollmentDetails)
 
 router.put("/:studentId", updateStudent) // update
 

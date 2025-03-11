@@ -37,7 +37,7 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 		const enrollment = await StudentEnrollment.findOne({
 			where: {
 				studentId,
-				enrollmentId
+				id: enrollmentId
 			},
 			include: [
 				ClassRoom,
@@ -50,6 +50,7 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 		})
 		
 		if (!enrollment) {
+			await transaction.rollback()
 			next(new ResponseErr(
 				404,
 				"Enrollment Not Found",
