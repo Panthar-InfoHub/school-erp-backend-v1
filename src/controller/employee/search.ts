@@ -34,7 +34,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
 
     try {
 
-        const foundEmployees = await Employee.findAll({
+        const {rows: foundEmployees, count} = await Employee.findAndCountAll({
             where: {
                 [Op.or]: [
                     {name: {[Op.like]: `%${q}%`}},
@@ -60,6 +60,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
 
         res.json({
             message: `${foundEmployees.length} Employees found`,
+            count,
             employees: foundEmployees,
         })
 

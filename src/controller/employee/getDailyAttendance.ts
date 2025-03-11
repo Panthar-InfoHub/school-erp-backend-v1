@@ -24,7 +24,7 @@ export default async function getDailyAttendance(req: Request, res: Response, ne
 	
 	try {
 		
-		const employeeAttendances = await EmployeeAttendance.findAll(
+		const attendanceData = await EmployeeAttendance.findAll(
 		{
 			where: {
 				date: zeroTimedDate,
@@ -43,7 +43,7 @@ export default async function getDailyAttendance(req: Request, res: Response, ne
 	
 	res.status(200).json({
 		message: "Attendance fetched successfully",
-		attendance: employeeAttendances,
+		attendanceData: attendanceData,
 	});
 	
 	}
