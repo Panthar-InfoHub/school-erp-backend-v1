@@ -59,21 +59,6 @@ export default async function getClassroomSectionStudentsInfo(
 			include: [
 				{
 					model: Student,
-					attributes: {
-						exclude: [
-							"searchName",
-							"address",
-							"dateOfBirth",
-							"fatherName",
-							"fatherPhone",
-							"motherName",
-							"motherPhone",
-							"createdAt",
-							"updatedAt",
-							"profileImg"
-						],
-						include: ["name", "isActive"]
-					}
 				},
 				{
 					model: ClassSection,

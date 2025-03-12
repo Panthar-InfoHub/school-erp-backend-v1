@@ -45,7 +45,6 @@ router.delete("/:studentId/image", deleteStudentProfileImg) // delete image
 
 router.delete("/:studentId", deleteStudent) // delete student completely. (only if no payments exist)
 
-
 router.post("/:studentId/enrollment/:enrollmentId/exam/new", createExamEntry)
 
 router.patch("/:studentId/enrollment/:enrollmentId/exam/:examEntryId", updateExamEntry)

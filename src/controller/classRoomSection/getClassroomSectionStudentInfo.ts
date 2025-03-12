@@ -60,21 +60,6 @@ export default async function getClassroomSectionStudentsInfo(
       include: [
         {
           model: Student,
-          attributes: {
-            exclude: [
-              "searchName",
-              "address",
-              "dateOfBirth",
-              "fatherName",
-              "fatherPhone",
-              "motherName",
-              "motherPhone",
-              "createdAt",
-              "updatedAt",
-              "profileImg"
-            ],
-            include: ["name", "isActive"]
-          }
         },
         {
           // Include monthly fees temporarily for fee calculations

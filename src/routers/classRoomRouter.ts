@@ -30,4 +30,6 @@ router.delete("/:classroomId/class-section/:classroomSectionId", deleteSection)
 
 router.get("/:classroomId/class-section/:classroomSectionId/students", getClassroomSectionStudentsInfo)
 
+
+
 export default router;
