@@ -36,6 +36,7 @@ export default async function deleteStudent(req: Express.Request, res: Express.R
         });
 
         if (!student) {
+            console.log("Student not found");
             res.status(404).json({ error: "Student not found" });
             return;
         }

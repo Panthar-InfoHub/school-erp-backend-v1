@@ -4,12 +4,13 @@ import joiValidator from "../../middleware/joiValidator";
 import sequelize from "../../lib/seq";
 import StudentEnrollment from "../../models/studentEnrollment";
 import logger from "../../lib/logger";
+import StudentMonthlyFee from "../../models/studentMonthlyFeeModel";
 
 type DeleteEnrollmentRequestQuery = {
   force?: boolean;
 };
 
-const deleteEnrollmentRequestQuerySchema = Joi.object({
+const deleteEnrollmentRequestQuerySchema = Joi.object<DeleteEnrollmentRequestQuery>({
   force: Joi.boolean().optional(),
 });
 
@@ -41,7 +42,7 @@ export default async function deleteEnrollment(
       where: { id: enrollmentId, studentId },
       include: [
         {
-          association: "feePayments", // ensure that this association is defined in your StudentEnrollment model
+          model: StudentMonthlyFee
         },
       ],
       transaction,
