@@ -37,7 +37,7 @@ export default async function deleteEnrollment(
   const transaction = await sequelize.transaction();
 
   try {
-    // Assuming the StudentEnrollment model is set up to include feePayment entries via an association (e.g., feePayments)
+    // Assuming the StudentEnrollment model is set up to include feePayment entries via an association (for example, feePayments)
     const enrollment = await StudentEnrollment.findOne({
       where: { id: enrollmentId, studentId },
       include: [

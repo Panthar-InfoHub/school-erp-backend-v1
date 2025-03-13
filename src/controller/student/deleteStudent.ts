@@ -24,6 +24,8 @@ export default async function deleteStudent(req: Express.Request, res: Express.R
     }
 
     const transaction = await sequelize.transaction();
+    
+    const force = Boolean(req.query.force);
 
     try {
         const student = await Student.findOne({
@@ -44,9 +46,9 @@ export default async function deleteStudent(req: Express.Request, res: Express.R
         // Check if enrollments exist and verify that none have fee information
         if (student.studentEnrollments && student.studentEnrollments.length > 0) {
             for (const enrollment of student.studentEnrollments) {
-                if (enrollment.monthlyFees && enrollment.monthlyFees.length > 0 && !req.body.force) {
+                if (enrollment.monthlyFees && enrollment.monthlyFees.length > 0 && !force) {
                     next(new ResponseErr(
-                        400,
+                        409,
                         "Student Deletion Error",
                         "Cannot delete student as there are fee payment entries associated with it."
                     ))
