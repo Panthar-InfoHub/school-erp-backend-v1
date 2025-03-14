@@ -15,6 +15,8 @@ export default class Employee extends Model {
     @Column declare passwordHash: string;
 
     @Column declare name: string;
+    
+    @Column declare searchName: string;
 
     @Default("") @Column declare address: string
 

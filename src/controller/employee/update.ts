@@ -128,7 +128,10 @@ export default async function updateEmployee(req:Express.Request, res:Express.Re
 		}
 		
 		
-		const updatedEmpData = await empData.update({...body}, {where: {id: empId}, transaction})
+		const updatedEmpData = await empData.update({
+			...body,
+			...(body.name ? {name: body.name, searchName: body.name.toLowerCase()} : {}),
+		}, {where: {id: empId}, transaction})
 		
 		await transaction.commit()
 		

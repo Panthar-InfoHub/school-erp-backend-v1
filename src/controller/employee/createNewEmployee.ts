@@ -80,6 +80,7 @@ export default async function createEmployee(req: Express.Request, res: Express.
         const newEmployee = await Employee.create({
             id: newUserid,
             passwordHash,
+            searchName: body.name.toLowerCase(),
             ...body}
         , {transaction})
 

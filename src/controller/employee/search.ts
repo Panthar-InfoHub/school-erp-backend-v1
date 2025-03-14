@@ -27,7 +27,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
         return
     }
 
-    const q = String(req.query.q)
+    const q = String(req.query.q).toLowerCase()
     const page = Number(req.query.page)
     const limit = Number(req.query.limit)
     const ascending = req.query.ascending === "true"
@@ -37,7 +37,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
         const {rows: foundEmployees, count} = await Employee.findAndCountAll({
             where: {
                 [Op.or]: [
-                    {name: {[Op.like]: `%${q}%`}},
+                    {searchName: {[Op.like]: `%${q}%`}},
                     {id: {[Op.like]: `%${q}%`}},
                     {email: {[Op.like]: `%${q}%`}},
                     {address: {[Op.like]: `%${q}%`}}
