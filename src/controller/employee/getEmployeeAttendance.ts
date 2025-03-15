@@ -2,10 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import EmployeeAttendance from "../../models/employeeAttendance";
+import {Op} from "sequelize";
 
-// Define a schema for fetching attendance by a single date
-const getEmployeesAttendanceQuerySchema = Joi.object({
-  date: Joi.date().required(),
+
+type getEmployeeAttendanceQuery = {
+  start_date: Date;
+  end_date: Date;
+}
+
+const getEmployeesAttendanceQuerySchema = Joi.object<getEmployeeAttendanceQuery>({
+  start_date: Joi.date().required(),
+  end_date: Joi.date().required(),
 });
 
 export default async function getEmployeeAttendance(req: Request, res: Response, next: NextFunction) {
@@ -17,11 +24,14 @@ export default async function getEmployeeAttendance(req: Request, res: Response,
   }
   
   try {
-    const { date } = req.query;
-    const zeroTimedDate = new Date(new Date(date as string).setHours(0, 0, 0, 0));
+    const { start_date, end_date } = req.query;
+    const zeroTimedStartDate = new Date(new Date(start_date as string).setHours(0, 0, 0, 0));
+    const zeroTimedEndDate = new Date(new Date(end_date as string).setHours(0, 0, 0, 0));
     
     const employeeAttendances = await EmployeeAttendance.findAll({
-      where: { date: zeroTimedDate },
+      where: { date: {
+        [Op.between]: [zeroTimedStartDate, zeroTimedEndDate]
+        } },
     });
     
     res.status(200).json({
