@@ -4,7 +4,6 @@ import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import sequelize from "../../lib/seq";
 import Vehicle from "../../models/vehicle";
-import Driver from "../../models/driver";
 import ResponseErr from "../../error/responseErr";
 
 const deleteVehicleParamsSchema = Joi.object({
@@ -36,13 +35,7 @@ export default async function deleteVehicle(
                 new ResponseErr(404, "Vehicle Not Found", "The vehicle id provided does not exist.")
             );
         }
-
-        // If a driver is associated with this vehicle, detach it by setting vehicle_id to null
-        const driver = await Driver.findOne({ where: { vehicle_id: vehicleId }, transaction });
-        if (driver) {
-            await driver.update({ vehicle_id: null }, { transaction });
-        }
-
+        
         // Delete the vehicle record
         await vehicle.destroy({ transaction });
 

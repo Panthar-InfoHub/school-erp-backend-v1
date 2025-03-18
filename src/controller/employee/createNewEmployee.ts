@@ -7,7 +7,6 @@ import logger from "../../lib/logger";
 import generateUUID from "../../utils/uuidGenerator";
 import sequelize from "../../lib/seq";
 import Teacher from "../../models/teacher";
-import Driver from "../../models/driver";
 import {identityEntry} from "../../types";
 
 
@@ -90,11 +89,6 @@ export default async function createEmployee(req: Express.Request, res: Express.
         switch (body.workRole) {
             case "teacher":
                 await Teacher.create({
-                    id: newUserid,
-                }, {transaction})
-                break;
-            case "driver":
-                await Driver.create({
                     id: newUserid,
                 }, {transaction})
                 break;

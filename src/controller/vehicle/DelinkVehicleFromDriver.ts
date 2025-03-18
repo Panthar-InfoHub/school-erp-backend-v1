@@ -3,7 +3,6 @@ import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import sequelize from "../../lib/seq";
 import Vehicle from "../../models/vehicle";
-import Driver from "../../models/driver";
 import ResponseErr from "../../error/responseErr";
 import logger from "../../lib/logger";
 
@@ -44,18 +43,7 @@ export default async function delinkVehicleDriver(
         )
       );
     }
-
-    // Identify any driver linked to the vehicle by vehicle_id field
-    const driver = await Driver.findOne({ where: { vehicle_id: vehicleId }, transaction });
-    if (driver) {
-      logger.info(`Detaching driver ${driver.id} from vehicle ${vehicleId}.`);
-      await driver.update({ vehicle_id: null }, { transaction });
-    } else {
-      logger.info(`No driver linked to vehicle ${vehicleId}.`);
-    }
-
-    // Update the vehicle's record to clear the driver linking
-    vehicle.driverId = "";
+    
     await vehicle.save({ transaction });
 
     await transaction.commit();

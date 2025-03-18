@@ -6,7 +6,6 @@ import ResponseErr from "../../error/responseErr";
 import sequelize from "../../lib/seq";
 import logger from "../../lib/logger";
 import Teacher from "../../models/teacher";
-import Driver from "../../models/driver";
 
 
 type deleteImpReqParams = {
@@ -34,7 +33,6 @@ export default async function deleteEmp(req: Express.Request, res: Express.Respo
 		
 		const destroyedCount = await Employee.destroy({where: {id: employeeId}, transaction})
 		await Teacher.destroy({where: {id: employeeId}, transaction})
-		await Driver.destroy({where: {id: employeeId}, transaction})
 		
 		await transaction.commit()
 		

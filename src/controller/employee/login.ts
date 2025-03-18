@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import Employee from "../../models/employee";
 import Admin from "../../models/admin";
 import Teacher from "../../models/teacher";
-import Driver from "../../models/driver";
 import joiValidator from "../../middleware/joiValidator";
 
 const loginSchema = Joi.object({
@@ -28,7 +27,7 @@ const loginEmployee = async (req: Express.Request, res: Express.Response, next:E
         // Find the employee by email, including their related records to determine roles
         const employee = await Employee.findOne({
             where: { email },
-            include: [Admin, Teacher, Driver],
+            include: [Admin, Teacher],
         });
 
         if (!employee) {
@@ -46,8 +45,7 @@ const loginEmployee = async (req: Express.Request, res: Express.Response, next:E
         // Determine employee roles based on the existence of related records
         const isAdmin = Boolean(employee.admin);
         const isTeacher = Boolean(employee.teacherData);
-        const isDriver = Boolean(employee.driverData);
-
+        
         // Prepare the payload for the JWT
         const payload = {
             id: employee.id,
@@ -55,7 +53,6 @@ const loginEmployee = async (req: Express.Request, res: Express.Response, next:E
             name: employee.name,
             isAdmin,
             isTeacher,
-            isDriver,
         };
 
         // Sign the JWT. The secret should be provided via environment variables.

@@ -5,7 +5,6 @@ import Employee from "../../models/employee";
 import ResponseErr from "../../error/responseErr";
 import bcrypt from "bcrypt";
 import Teacher from "../../models/teacher";
-import Driver from "../../models/driver";
 import sequelize from "../../lib/seq";
 import {identityEntry} from "../../types";
 
@@ -115,15 +114,8 @@ export default async function updateEmployee(req:Express.Request, res:Express.Re
 			if (empData.workRole === "teacher" && body.workRole !== "teacher") {
 				await Teacher.destroy({where: {id: empId}, transaction});
 			}
-			if (empData.workRole === "driver" && body.workRole !== "driver") {
-				await Driver.destroy({where: {id: empId}, transaction});
-			}
-			
 			if (body.workRole === "teacher") {
 				await Teacher.create({id: empId}, {transaction});
-			}
-			if (body.workRole === "driver") {
-				await Driver.create({id: empId}, {transaction});
 			}
 		}
 		

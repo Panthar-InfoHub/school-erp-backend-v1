@@ -2,7 +2,6 @@ import {startAttendanceScheduler} from "../cron/employeeAttendance";
 import {Sequelize} from "sequelize-typescript";
 import Employee from "../models/employee";
 import Teacher from "../models/teacher";
-import Driver from "../models/driver";
 import Admin from "../models/admin";
 import Vehicle from "../models/vehicle";
 import ClassRoom from "../models/classRoom";
@@ -21,7 +20,7 @@ const sequelize = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    models: [Employee, Teacher, Driver, Admin, Vehicle, ClassRoom,
+    models: [Employee, Teacher, Admin, Vehicle, ClassRoom,
         ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment, ExamEntry, EmployeeAttendance],
     logging: false,
 });

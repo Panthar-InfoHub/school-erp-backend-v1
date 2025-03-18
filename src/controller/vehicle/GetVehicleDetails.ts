@@ -2,7 +2,6 @@ import Express from "express";
 import Joi from "joi";
 import joiValidator from "../../middleware/joiValidator";
 import Vehicle from "../../models/vehicle";
-import Driver from "../../models/driver";
 import ResponseErr from "../../error/responseErr";
 import logger from "../../lib/logger";
 
@@ -31,7 +30,6 @@ export default async function getVehicle(
   try {
     // Retrieve the vehicle along with its associated driver details (if any)
     const vehicle = await Vehicle.findByPk(vehicleId, {
-      include: [Driver],
     });
 
     if (!vehicle) {
