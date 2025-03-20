@@ -17,16 +17,8 @@ const updateVehicleParamsSchema = Joi.object({
 const updateVehicleBodySchema = Joi.object({
 		vehicleNumber: Joi.string()
 			.pattern(/^[A-Z]{2} \d{2} [A-Z]{2} \d{4}$/)
-			.optional(),
-		driverId: Joi.string()
-			.allow("")
-			.optional()
-			.regex(/^emp_/),
+			.required(),
 	})
-	.or("vehicleNumber", "driverId") // custom check: at least one field must be provided
-	.messages({
-		"object.missing": "At least one field (vehicleNumber or driverId) must be provided.",
-	});
 
 export default async function updateVehicle(
 	req: Express.Request,
