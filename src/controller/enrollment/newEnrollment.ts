@@ -24,6 +24,7 @@ type enrollmentReqBody = {
     sessionStartDate: Date,
     sessionEndDate: Date,
     monthlyFee: number,
+    one_time_fee: number,
     isActive: boolean,
 }
 
@@ -32,6 +33,7 @@ const enrollmentReqBodySchema = Joi.object<enrollmentReqBody>({
     sessionEndDate: Joi.date().required(),
     monthlyFee: Joi.number().required(),
     isActive: Joi.boolean().required(),
+    one_time_fee: Joi.number().required().min(0),
     classRoomSectionId: Joi.string().pattern(/^section_/).required(),
 })
 
@@ -156,6 +158,7 @@ export default async function createNewEnrollment(req: Express.Request, res: Exp
             monthlyFee: body.monthlyFee,
             isActive: body.isActive,
             subjects: classSectionData.subjects,
+            one_time_fee: body.one_time_fee,
         }, {transaction})
 
         // Create Fee entries

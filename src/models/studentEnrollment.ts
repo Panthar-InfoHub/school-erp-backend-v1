@@ -54,7 +54,10 @@ export default class StudentEnrollment extends Model {
 
     @Column({type: DataType.FLOAT})
     declare monthlyFee: number;
-
+    
+    @Column({type: DataType.FLOAT})
+    declare one_time_fee: number;
+    
     @Column({type: DataType.JSON})
     declare subjects: subject[]
 

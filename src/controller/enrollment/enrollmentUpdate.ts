@@ -15,6 +15,7 @@ type updateEnrollmentParams = {
 type updateEnrollmentBody = {
   isActive?: boolean;
   isComplete?: boolean;
+  one_time_fee?: number;
 };
 
 // Create Joi validation schemas
@@ -26,6 +27,7 @@ const updateEnrollmentParamsSchema = Joi.object<updateEnrollmentParams>({
 const updateEnrollmentBodySchema = Joi.object<updateEnrollmentBody>({
   isActive: Joi.boolean().optional(),
   isComplete: Joi.boolean().optional(),
+  one_time_fee: Joi.number().optional(),
 }).min(1); // Ensures at least one field is provided
 
 // Handler function to update enrollment
@@ -49,7 +51,7 @@ export default async function updateEnrollment(
   }
 
   const { studentId, enrollmentId } = req.params;
-  const { isActive, isComplete } = req.body as updateEnrollmentBody;
+  const { isActive, isComplete, one_time_fee } = req.body as updateEnrollmentBody;
 
   const transaction = await sequelize.transaction();
 
@@ -77,6 +79,10 @@ export default async function updateEnrollment(
 
     if (typeof isComplete !== "undefined") {
       enrollment.isComplete = isComplete;
+    }
+    
+    if (typeof one_time_fee !== "undefined") {
+      enrollment.one_time_fee = one_time_fee;
     }
 
     // Save the updates within the transaction
