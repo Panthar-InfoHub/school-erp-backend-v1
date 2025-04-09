@@ -65,7 +65,7 @@ app.get("/", (req: Express.Request, res: Express.Response) => {
     return
 })
 
-app.get("/dash-status", getDashboardStatus)
+app.get("/v1/dash-status", getDashboardStatus)
 
 
 app.use((err:any, req:Express.Request, res:Express.Response, _:Express.NextFunction) => {
