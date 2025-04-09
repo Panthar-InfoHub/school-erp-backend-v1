@@ -9,6 +9,7 @@ import ClassSection from "../../models/classSections";
 import Student from "../../models/student";
 import StudentMonthlyFee from "../../models/studentMonthlyFeeModel";
 import ExamEntry from "../../models/examEntry";
+import FeePayment from "../../models/feePayment";
 
 type getEnrollmentDetailsParams = {
 	studentId: string,
@@ -45,6 +46,7 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 				Student,
 				StudentMonthlyFee,
 				ExamEntry,
+				FeePayment,
 			],
 			transaction
 		})

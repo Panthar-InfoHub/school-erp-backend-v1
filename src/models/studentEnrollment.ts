@@ -15,6 +15,7 @@ import ClassSection from "./classSections";
 import StudentMonthlyFee from "./studentMonthlyFeeModel";
 import {subject} from "../types";
 import ExamEntry from "./examEntry";
+import FeePayment from "./feePayment";
 
   @Table({
     indexes: [
@@ -82,6 +83,9 @@ export default class StudentEnrollment extends Model {
 
     @HasMany(() => ExamEntry)
     declare examDetails: ExamEntry[];
+    
+    @HasMany(() => FeePayment)
+    declare feePayments: FeePayment[];
 
 
 }
