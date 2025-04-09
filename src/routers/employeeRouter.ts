@@ -15,6 +15,7 @@ import updateEmployeeAttendance from "../controller/employee/updateEmployeeAtten
 import getDailyAttendance from "../controller/employee/getDailyAttendance";
 import getEmployeeAttendance from "../controller/employee/getEmployeeAttendance";
 import setDateAsHoliday from "../controller/employee/markDayAsHoliday";
+import generateDailyAttendanceEntries from "../controller/employee/generateDailyAttendanceEntries";
 
 // Mounted at /employee
 const router = Express.Router();
@@ -32,6 +33,7 @@ router.post("/attendance/set-date-as-holiday", setDateAsHoliday)
 // Add employee
 router.post("/new", createEmployee);
 router.post("/login", loginEmployee)
+router.post("/attendance/generate", generateDailyAttendanceEntries)
 
 router.post("/:employeeId/image", multer.single("profile_img"), updateEmployeeProfileImg) // update image
 router.post("/:employeeId/attendance", addEmployeeAttendance)
