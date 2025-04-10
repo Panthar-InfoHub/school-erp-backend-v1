@@ -43,8 +43,10 @@ export default async function getStudentData(
                     model: StudentMonthlyFee
                 }
             ],
-
-        }]
+        }],
+      attributes: {
+              exclude: ["profileImg"]
+          }
     })
 
     if (!student) {

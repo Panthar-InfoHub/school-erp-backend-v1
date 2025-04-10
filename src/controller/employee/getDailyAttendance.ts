@@ -34,7 +34,7 @@ export default async function getDailyAttendance(req: Request, res: Response, ne
 					model: Employee,
 					attributes: {
 						exclude: ["id", "email","dateOfBirth", "phone", "passwordHash", "address", "fatherName", "motherName", "fatherPhone", "motherPhone",
-							"ids", "salary", "createdAt", "updatedAt"]
+							"ids", "salary", "createdAt", "updatedAt", "profileImg"]
 					}
 				}
 			]

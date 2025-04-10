@@ -17,6 +17,7 @@ import getEmployeeAttendance from "../controller/employee/getEmployeeAttendance"
 import setDateAsHoliday from "../controller/employee/markDayAsHoliday";
 import generateDailyAttendanceEntries from "../controller/employee/generateDailyAttendanceEntries";
 import getAllAdmins from "../controller/admin/getAllAdmins";
+import getEmployeeProfileImg from "../controller/employee/getProfileImg";
 
 // Mounted at /employee
 const router = Express.Router();
@@ -26,6 +27,7 @@ router.get("/", searchEmployee);
 router.get("/attendance", getDailyAttendance);
 router.get("/admins", getAllAdmins)
 router.get("/:employeeId", getEmployeeData);
+router.get("/:employeeId/profileImg", getEmployeeProfileImg);
 router.get("/:employeeId/attendance", getEmployeeAttendance);
 
 router.post("/attendance/set-date-as-holiday", setDateAsHoliday)

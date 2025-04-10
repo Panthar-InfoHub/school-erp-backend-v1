@@ -76,6 +76,9 @@ export default async function getSearchStudents(
         [orderPriority, ascending ? "ASC" : "DESC"],
         ["name", ascending ? "ASC" : "DESC"],
       ],
+      attributes: {
+        exclude: ["profileImg"],
+      },
       offset,
       limit,
     });

@@ -31,7 +31,7 @@ export default async function getEmployeeData(
 		
 		const employee = await Employee.findByPk(employeeId, {
 			attributes: {
-				exclude: ["passwordHash"]
+				exclude: ["passwordHash", "profileImg"]
 			}
 		})
 		

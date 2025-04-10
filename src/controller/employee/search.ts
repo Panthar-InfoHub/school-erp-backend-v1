@@ -50,7 +50,7 @@ export default async function searchEmployee(req: Express.Request, res: Express.
                 ["address", ascending ? "ASC" : "DESC"],
             ],
             attributes: {
-                exclude: ['passwordHash'],
+                exclude: ['passwordHash', "profileImg"],
             },
             limit: limit,
             offset: (page - 1) * limit,

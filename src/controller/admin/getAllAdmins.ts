@@ -11,7 +11,7 @@ export default async function getAllAdmins(req: Request, res: Response, next: Ne
       include: [
         {
           model: Employee,
-          attributes: ["name", "workRole", "isActive", "isFired", "profileImg"]
+          attributes: ["name", "workRole", "isActive", "isFired"]
         }
       ]
     });

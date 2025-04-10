@@ -2,6 +2,7 @@ import Express from "express";
 import logger from "../../lib/logger";
 import Employee from "../../models/employee"; // Adjust the path as needed to your logger module
 
+
 export default async function updateEmployeeProfileImg(
   req: Express.Request,
   res: Express.Response,
