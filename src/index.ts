@@ -15,6 +15,7 @@ import vehicleRouter from "./routers/vehicleRouter";
 import studentRouter from "./routers/studentRouter";
 import classRoomRouter from "./routers/classRoomRouter";
 import {getDashboardStatus} from "./controller/admin/getDashboardStats";
+import analyticsRouter from "./routers/analyticsRouter";
 
 const PORT = Number(process.env.PORT) || 8080;
 
@@ -59,6 +60,7 @@ app.use("/v1/employee", employeeRouter)
 app.use("/v1/vehicle", vehicleRouter)
 app.use("/v1/student", studentRouter)
 app.use("/v1/classroom", classRoomRouter)
+app.use("/v1/analytics", analyticsRouter)
 
 app.get("/", (req: Express.Request, res: Express.Response) => {
     res.send("Server is live!");
