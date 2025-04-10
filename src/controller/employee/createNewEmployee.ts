@@ -30,7 +30,7 @@ type createEmployeeRequest = {
 
 const createEmployeeSchema = Joi.object<createEmployeeRequest>({
     name: Joi.string().required(),
-    password: Joi.string().required().min(8).regex(/^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{9,}$/),
+    password: Joi.string().required(),
     address: Joi.string().allow('').optional(),
     fatherName: Joi.string().allow('').optional(),
     fatherPhone: Joi.string().allow('').optional(),
