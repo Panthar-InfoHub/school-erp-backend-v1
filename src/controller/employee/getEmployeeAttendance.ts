@@ -15,6 +15,10 @@ const getEmployeesAttendanceQuerySchema = Joi.object<getEmployeeAttendanceQuery>
   end_date: Joi.date().required(),
 });
 
+const getEmployeesAttendanceParamsSchema = Joi.object({
+  employeeId: Joi.string().required(),
+});
+
 export default async function getEmployeeAttendance(req: Request, res: Response, next: NextFunction) {
   
   const error = joiValidator(getEmployeesAttendanceQuerySchema, "query", req, res);
@@ -23,13 +27,22 @@ export default async function getEmployeeAttendance(req: Request, res: Response,
     return;
   }
   
+  const paramsError = joiValidator(getEmployeesAttendanceParamsSchema, "params", req, res);
+  if (paramsError) {
+    next(paramsError);
+    return;
+  }
+  
   try {
     const { start_date, end_date } = req.query;
+    const { employeeId } = req.params;
     const zeroTimedStartDate = new Date(new Date(start_date as string).setHours(0, 0, 0, 0));
     const zeroTimedEndDate = new Date(new Date(end_date as string).setHours(0, 0, 0, 0));
     
     const employeeAttendances = await EmployeeAttendance.findAll({
-      where: { date: {
+      where: {
+        employeeId: employeeId,
+        date: {
         [Op.between]: [zeroTimedStartDate, zeroTimedEndDate]
         } },
     });
