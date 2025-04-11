@@ -9,6 +9,7 @@ type getPaymentsInfoQuery = {
   end_date: Date;
   limit: number;
   page: number;
+  ascending: boolean;
 }
 
 const getPaymentsInfoQuerySchema = Joi.object<getPaymentsInfoQuery>({
@@ -16,6 +17,7 @@ const getPaymentsInfoQuerySchema = Joi.object<getPaymentsInfoQuery>({
   end_date: Joi.date().optional(),
   page: Joi.number().integer().positive().required(),
   limit: Joi.number().integer().positive().required(),
+  ascending: Joi.boolean().optional(),
 
 });
 
@@ -29,7 +31,7 @@ export default async function getPaymentsInfo(req: Request, res: Response, next:
   
   try {
     
-    let { start_date, end_date, page, limit } = req.query;
+    let { start_date, end_date, page, limit, ascending } = req.query;
     
     const zeroTimedStartDate = new Date(new Date(start_date as string).setHours(0, 0, 0, 0));
     const zeroTimedEndDate = new Date(new Date(end_date as string).setHours(0, 0, 0, 0));
@@ -44,6 +46,8 @@ export default async function getPaymentsInfo(req: Request, res: Response, next:
       },
       limit: Number(limit),
       offset: (Number(page) - 1) * Number(limit),
+      order: [['paidOn', ascending === "true" ? 'ASC' : 'DESC']]
+
     })
     
     console.log(`Length of Payments: ${payments.length}`)
