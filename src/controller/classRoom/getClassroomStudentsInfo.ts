@@ -59,6 +59,9 @@ export default async function getClassroomStudentsInfo(
       include: [
         {
           model: Student,
+          attributes: {
+            exclude: ["profileImg"]
+          }
         },
         {
           model: ClassSection,

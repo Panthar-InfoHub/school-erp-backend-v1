@@ -60,6 +60,9 @@ export default async function getClassroomSectionStudentsInfo(
       include: [
         {
           model: Student,
+          attributes: {
+            exclude: ["profileImg"]
+          }
         },
         {
           // Include monthly fees temporarily for fee calculations
