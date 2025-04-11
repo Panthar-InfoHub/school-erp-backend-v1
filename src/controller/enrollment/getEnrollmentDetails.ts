@@ -43,7 +43,12 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 			include: [
 				ClassRoom,
 				ClassSection,
-				Student,
+				{
+					model: Student,
+					attributes: {
+						exclude: ["profileImg"]
+					}
+				},
 				StudentMonthlyFee,
 				ExamEntry,
 				FeePayment,
