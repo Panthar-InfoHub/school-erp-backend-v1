@@ -18,7 +18,6 @@ const getPaymentsInfoQuerySchema = Joi.object<getPaymentsInfoQuery>({
   page: Joi.number().integer().positive().required(),
   limit: Joi.number().integer().positive().required(),
   ascending: Joi.boolean().optional(),
-
 });
 
 export default async function getPaymentsInfo(req: Request, res: Response, next: NextFunction) {
