@@ -17,6 +17,7 @@ import deleteExamEntry from "../controller/enrollment/deleteExamEntry";
 import updateExamEntry from "../controller/enrollment/updateExamEntry";
 import {getEnrollmentDetails} from "../controller/enrollment/getEnrollmentDetails";
 import getStudentProfileImg from "../controller/student/getStudentProfileImg";
+import getStudentPayments from "../controller/student/getStudentPayments";
 
 const router = Express.Router();
 
@@ -29,6 +30,8 @@ router.post("/:studentId/new-enrollment", createNewEnrollment) // create new enr
 router.post("/:studentId/enrollment/:enrollmentId/fee/pay", payFee)
 
 router.get("/:studentId", getStudentData) // get
+
+router.get("/:studentId/payments", getStudentPayments)
 
 router.get('/:studentId/profileImg', getStudentProfileImg)
 
