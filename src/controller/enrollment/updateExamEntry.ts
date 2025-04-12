@@ -114,6 +114,7 @@ const updateExamEntryBodySchema = Joi.object({
 		examName: Joi.string().optional(),
 		examType: Joi.string().optional(),
 		examDate: Joi.date().optional(),
+		term: Joi.string().optional(),
 		note: Joi.string().allow("").optional(),
 		subjects: Joi.array().items(subjectUpdateSchema).optional(),
 		studentPassed: Joi.boolean().optional(),
@@ -221,6 +222,10 @@ export default async function updateExamEntry(
 		
 		if (updateFields.studentPassed !== undefined) {
 			examEntry.studentPassed = updateFields.studentPassed;
+		}
+		
+		if (updateFields.term !== undefined) {
+			examEntry.term = updateFields.term;
 		}
 		
 		logger.info("Saving updated exam entry");

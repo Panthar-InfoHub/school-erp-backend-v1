@@ -13,6 +13,7 @@ type createExamEntryReqBody = {
     examType: string
     examDate: Date,
     note: string | undefined,
+    term: string
 }
 
 
@@ -25,6 +26,7 @@ const createExamEntryReqBodySchema = Joi.object<createExamEntryReqBody>({
     examName: Joi.string().required(),
     examType: Joi.string().required(),
     examDate: Joi.date().required(),
+    term: Joi.string().required(),
     note: Joi.string().allow("").optional(),
 })
 
@@ -48,7 +50,7 @@ export default async function createExamEntry(req: Request, res: Response, next:
     }
 
     const { enrollmentId } = req.params
-    const { examName, examType, examDate, note } : createExamEntryReqBody = req.body
+    const { examName, examType, examDate, note, term } : createExamEntryReqBody = req.body
 
 
     try {
@@ -110,6 +112,7 @@ export default async function createExamEntry(req: Request, res: Response, next:
             studentPassed: true,
             subjects: subjectResults,
             note,
+            term,
             examType,
             examDate,
         })

@@ -35,11 +35,14 @@ export default class ExamEntry extends Model {
     @Column @ForeignKey(() => Student) declare studentId:string
 
     @Default(null) @AllowNull(true) @Column({type: DataType.STRING}) declare note: string | null; // some extra info that might be included
+    
+    
+    @Default(null) @AllowNull(true) @Column({type: DataType.STRING}) declare term: string;
 
     @Column @ForeignKey(() => StudentEnrollment)
     declare enrollmentId:string
 
-    @Column declare examType:string // this can be pre-defined in front-end. CT/Half-Yearly/Yearly/Final
+    @Column declare examType:string // this can be pre-defined in the front-end. CT/Half-Yearly/Yearly/Final
 
     @Column({ type: DataType.JSON })
     declare subjects: subjectResult[]
