@@ -68,7 +68,7 @@ export default class StudentEnrollment extends Model {
     @Default(false) @Column
     declare isComplete: boolean;
 
-    @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade deletes when the student is deleted
+    @BelongsTo(() => Student)
     declare student: Student;
 
 
