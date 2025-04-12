@@ -40,6 +40,12 @@ export async function getDashboardStatus(req: Request, res: Response, next: Next
     // For fee payment statistics, determine the start date of the current month.
     const currentMonthStart = new Date(year, month, 1);
 
+    // Get the date for 12 months ago from the current date
+    const twelveMonthsAgo = new Date(currentDate);
+    twelveMonthsAgo.setMonth(month - 11);
+    twelveMonthsAgo.setDate(1); // First day of the month
+    twelveMonthsAgo.setHours(0, 0, 0, 0);
+
     // Execute several count queries in parallel.
     const [
       totalActiveEmployees,
@@ -83,6 +89,53 @@ export async function getDashboardStatus(req: Request, res: Response, next: Next
     });
     const totalFeePaymentsReceived = feePaymentRecords.reduce((sum, record) => sum + Number(record.paidAmount), 0);
 
+    // Get all fee payments for the last 12 months
+    const last12MonthsPayments = await FeePayment.findAll({
+      where: {
+        paidOn: { [Op.between]: [twelveMonthsAgo, lastDayOfMonth] }
+      },
+      attributes: ['paidOn', 'paidAmount'],
+      raw: true
+    });
+
+    // Group payments by month and calculate total for each month
+    const monthlyRevenue: { month: string; revenue: number; monthIndex: number; year: number; }[] = [];
+    
+    // Initialize all 12 months with zero
+    for (let i = 0; i < 12; i++) {
+      const monthDate = new Date(currentDate);
+      monthDate.setMonth(month - i);
+      
+      const monthLabel = monthDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+      monthlyRevenue.push({
+        month: monthLabel,
+        revenue: 0,
+        monthIndex: monthDate.getMonth(),
+        year: monthDate.getFullYear()
+      });
+    }
+
+    // Fill in the actual revenue data
+    last12MonthsPayments.forEach(payment => {
+      const paymentDate = new Date(payment.paidOn);
+      const paymentMonth = paymentDate.getMonth();
+      const paymentYear = paymentDate.getFullYear();
+      
+      const monthEntry = monthlyRevenue.find(
+        m => m.monthIndex === paymentMonth && m.year === paymentYear
+      );
+      
+      if (monthEntry) {
+        monthEntry.revenue += Number(payment.paidAmount);
+      }
+    });
+
+    // Sort by date (newest first)
+    monthlyRevenue.sort((a, b) => {
+      if (a.year !== b.year) return b.year - a.year;
+      return b.monthIndex - a.monthIndex;
+    });
+
     // Compose the dashboard status response.
     const dashboardStatus = {
       totalActiveEmployees,
@@ -95,6 +148,7 @@ export async function getDashboardStatus(req: Request, res: Response, next: Next
       totalDuePayment,
       totalVehicles,
       totalFeePaymentsReceived,
+      monthly_revenue: monthlyRevenue, // Add the monthly revenue data
     };
 
     res.json(dashboardStatus);

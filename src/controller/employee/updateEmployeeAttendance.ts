@@ -15,7 +15,7 @@ type updateEmployeeAttendanceBody = {
 
 const updateEmployeeAttendanceSchema = Joi.object<updateEmployeeAttendanceBody>({
 	isPresent: Joi.boolean().optional(),
-	clockInTime: Joi.date().optional(),
+	clockInTime: Joi.string().optional(),
 	isHoliday: Joi.boolean().optional(),
 	isLeave: Joi.boolean().optional(),
 	isInvalid: Joi.boolean().optional(),
