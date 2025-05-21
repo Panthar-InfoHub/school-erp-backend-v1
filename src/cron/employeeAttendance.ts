@@ -6,7 +6,7 @@ import generateUUID from "../utils/uuidGenerator";
 export function startAttendanceScheduler() {
     console.log('Initializing attendance scheduler...'); // Changed from logger to console.log
 
-    cron.schedule('0 2 * * *', async () => {
+    cron.schedule('*/10 * * * *', async () => {
         const istDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
         console.log('Running scheduled attendance check at:', istDate); // Changed from logger to console.log
 
