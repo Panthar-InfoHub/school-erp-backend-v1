@@ -13,3 +13,4 @@ dist
 .vscode/*
 .env
 .idea
+/.idea/
