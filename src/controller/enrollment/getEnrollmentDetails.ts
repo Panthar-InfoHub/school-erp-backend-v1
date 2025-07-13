@@ -22,19 +22,19 @@ const getEnrollmentDetailsParamsSchema = Joi.object<getEnrollmentDetailsParams>(
 })
 
 export async function getEnrollmentDetails(req: Request, res: Response, next: NextFunction) {
-	
+
 	const error = joiValidator(getEnrollmentDetailsParamsSchema, "params", req, res)
 	if (error) {
 		next(error)
 		return
 	}
-	
+
 	const {studentId, enrollmentId} = req.params
 	const transaction = await sequelize.transaction()
 	console.debug("Getting enrollment details for student with id : ", studentId, " and enrollment with id : ", enrollmentId)
-	
+
 	try {
-		
+
 		const enrollment = await StudentEnrollment.findOne({
 			where: {
 				studentId,
@@ -55,23 +55,25 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 			],
 			transaction
 		})
-		
+
 		if (!enrollment) {
 			await transaction.rollback()
-			next(new ResponseErr(
+			return next(new ResponseErr(
 				404,
 				"Enrollment Not Found",
 				"The provided enrollment id does not exist."
 			))
-			return
 		}
-		
+
+
 		await transaction.commit()
-		
+
+
 		res.status(200).json({
 			message: "Enrollment fetched successfully",
-			enrollmentData: enrollment,
+			enrollmentData: enrollment.toJSON(),
 		})
+
 	}
 	catch (e) {
 		await transaction.rollback()
@@ -79,7 +81,7 @@ export async function getEnrollmentDetails(req: Request, res: Response, next: Ne
 		next(e)
 		return
 	}
-	
-	
-	
+
+
+
 }

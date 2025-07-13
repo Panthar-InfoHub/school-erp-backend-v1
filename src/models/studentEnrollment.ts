@@ -88,4 +88,5 @@ export default class StudentEnrollment extends Model {
     declare feePayments: FeePayment[];
 
 
+
 }

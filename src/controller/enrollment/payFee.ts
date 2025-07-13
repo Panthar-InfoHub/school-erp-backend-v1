@@ -104,46 +104,49 @@ export default async function payFee(req:Express.Request, res:Express.Response, 
         );
 
         const originalRemainingBalance = sortedFees.reduce((total, fee) => {
-        // Only sum fees with a positive balance
-        return total + (fee.balance > 0 ? fee.balance : 0);
+            // Only sum fees with a positive balance
+            return total + (fee.balance > 0 ? fee.balance : 0);
         }, 0);
 
-
+        const paidMonthlyFeeIds: string[] = [];
         for (const fee of sortedFees) {
-          // If there is no balance left in this fee, skip processing it
-          if (fee.balance <= 0) continue;
+            // If there is no balance left in this fee, skip processing it
+            if (fee.balance <= 0) continue;
 
-          // If the remaining payment covers the full balance of the fee
-          if (remainingPayment >= fee.balance) {
-            remainingPayment -= fee.balance;
-            fee.amountPaid += fee.balance;
-            fee.balance = 0;
-            // Mark fee as fully paid (set paidDate)
-            fee.paidDate = paidOn ? paidOn : new Date();
-          } else {
-            // If the paid amount is less than the fee balance, pay partially
-            fee.amountPaid += remainingPayment;
-            fee.balance -= remainingPayment;
-            remainingPayment = 0;
-          }
-          // Save changes to the fee within the transaction scope
-          await fee.save({ transaction });
+            if (remainingPayment <= 0) break;
 
-          if (remainingPayment <= 0) break;
+            paidMonthlyFeeIds.push(fee.id);
+
+            // If the remaining payment covers the full balance of the fee
+            if (remainingPayment >= fee.balance) {
+                remainingPayment -= fee.balance;
+                fee.amountPaid += fee.balance;
+                fee.balance = 0;
+                // Mark fee as fully paid (set paidDate)
+                fee.paidDate = paidOn ? paidOn : new Date();
+            } else {
+                // If the paid amount is less than the fee balance, pay partially
+                fee.amountPaid += remainingPayment;
+                fee.balance -= remainingPayment;
+                remainingPayment = 0;
+            }
+            // Save changes to the fee within the transaction scope
+            await fee.save({ transaction });
+
         }
 
         // After processing all fees, check if there is any leftover amount.
         // If so, it is an overpayment.
         if (remainingPayment > 0) {
-          await transaction.rollback();
-          next(
-            new ResponseErr(
-              400,
-              "Overpayment Error",
-              "The paid amount exceeds the total due fees."
-            )
-          );
-          return
+            await transaction.rollback();
+            next(
+                new ResponseErr(
+                    400,
+                    "Overpayment Error",
+                    "The paid amount exceeds the total due fees."
+                )
+            );
+            return
         }
 
 
@@ -160,13 +163,14 @@ export default async function payFee(req:Express.Request, res:Express.Response, 
             paidOn: new Date(),
             remainingBalance: remainingBalance,
             originalBalance: originalRemainingBalance,
+            monthlyFeeIds: paidMonthlyFeeIds,
         }, {transaction})
 
         await transaction.commit()
 
         res.status(200).json({
             message: "Fee Paid Successfully",
-            paymentReceipt,
+            paymentReceipt : paymentReceipt.toJSON()
         })
         return
 

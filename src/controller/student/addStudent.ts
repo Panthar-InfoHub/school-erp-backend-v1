@@ -16,6 +16,7 @@ type createStudentRequest = {
     motherPhone: string | undefined,
     ids: identityEntry[]
     isActive: boolean,
+    UDISECode: string,
 }
 
 const createStudentRequestSchema = Joi.object<createStudentRequest>({
@@ -31,6 +32,7 @@ const createStudentRequestSchema = Joi.object<createStudentRequest>({
         idDocValue: Joi.string().required()
     })).required(),
     isActive: Joi.boolean().required(),
+    UDISECode: Joi.string().allow('').required(),
 })
 
 export default async function createStudent(req: Express.Request, res: Express.Response, next:Express.NextFunction) {

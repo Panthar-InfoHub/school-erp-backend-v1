@@ -17,6 +17,7 @@ type UpdateStudentRequest = {
   motherPhone?: string;
   ids?: Array<identityEntry>;
   isActive?: boolean;
+  UDISECode?: string
 };
 
 const updateStudentBodySchema = Joi.object<UpdateStudentRequest>({
@@ -36,6 +37,7 @@ const updateStudentBodySchema = Joi.object<UpdateStudentRequest>({
     )
     .optional(),
   isActive: Joi.boolean().optional(),
+  UDISECode: Joi.string().optional(),
 }).min(1);
 
 const updateStudentParamsSchema = Joi.object({
@@ -109,6 +111,10 @@ export default async function updateStudent(
     }
     if (body.isActive !== undefined) {
       student.isActive = body.isActive;
+    }
+
+    if (body.UDISECode !== undefined) {
+      student.UDISECode = body.UDISECode;
     }
 
     await student.save({ transaction });

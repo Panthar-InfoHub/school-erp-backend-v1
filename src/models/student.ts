@@ -21,6 +21,8 @@ export default class Student extends Model {
 
     @Column declare motherName:string
 
+    @Column declare UDISECode: string
+
     @Default(null) @AllowNull(true) @Column declare fatherPhone:string
 
     @Default(null) @AllowNull(true) @Column declare motherPhone:string

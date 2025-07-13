@@ -1,8 +1,7 @@
-import {v7} from "uuid";
-
+import {nanoid} from "nanoid";
 
 export default function generateUUID() {
 
-    return v7()
+    return nanoid();
 
 }

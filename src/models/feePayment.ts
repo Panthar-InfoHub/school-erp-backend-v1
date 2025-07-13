@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
 import Student from "./student";
 import StudentEnrollment from "./studentEnrollment";
 
@@ -20,6 +20,10 @@ export default class FeePayment extends Model {
     @Column declare paidOn:Date
 
     @Column declare remainingBalance: number
+
+    @Default([])
+    @Column({ type: DataType.ARRAY(DataType.STRING) })
+    declare monthlyFeeIds: string[];
 
     @BelongsTo(() => Student, { onDelete: "CASCADE" }) // Cascade delete on student deletion
     declare student: Student;

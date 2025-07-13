@@ -13,13 +13,14 @@ import FeePayment from "../models/feePayment";
 import ExamEntry from "../models/examEntry";
 import EmployeeAttendance from "../models/employeeAttendance";
 
-const sequelize = new Sequelize({
+const DB_URL = process.env.DB_URL;
+
+if (!DB_URL) {
+    throw new Error("DB_URL is not defined");
+}
+
+const sequelize = new Sequelize(DB_URL, {
     dialect: "postgres",
-    port: Number(process.env.DB_PORT),
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
     models: [Employee, Teacher, Admin, Vehicle, ClassRoom,
         ClassSection, Student, StudentEnrollment, StudentMonthlyFee, FeePayment, ExamEntry, EmployeeAttendance],
     logging: false,
